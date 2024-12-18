@@ -41,3 +41,103 @@ Las políticas de reemplazo de páginas se usan para decidir qué página de mem
 LRU es probablemente el más eficiente en escenarios reales porque prioriza páginas con más uso reciente, optimizando el rendimiento. Aunque es más complejo, los sistemas modernos pueden manejarlo mejor con hardware y software avanzados.
 
 ## Memoria Real
+### **1. Programa en Python para simular administración de memoria con particiones fijas**
+
+```python
+class ParticionFija:
+    def __init__(self, tamaño):
+        self.tamaño = tamaño
+        self.proceso = None  # Proceso asignado a esta partición
+
+    def asignar_proceso(self, proceso):
+        if proceso.tamaño <= self.tamaño:
+            self.proceso = proceso
+            return True
+        return False
+
+    def liberar(self):
+        self.proceso = None
+
+
+class Proceso:
+    def __init__(self, id, tamaño):
+        self.id = id
+        self.tamaño = tamaño
+
+
+# Configuración inicial
+particiones = [ParticionFija(100), ParticionFija(200), ParticionFija(300)]  # Particiones fijas
+procesos = [Proceso(1, 120), Proceso(2, 90), Proceso(3, 300), Proceso(4, 50)]  # Procesos
+
+# Simulación de asignación
+for proceso in procesos:
+    asignado = False
+    for particion in particiones:
+        if particion.proceso is None and particion.asignar_proceso(proceso):
+            print(f"Proceso {proceso.id} (Tamaño: {proceso.tamaño}) asignado a partición de tamaño {particion.tamaño}.")
+            asignado = True
+            break
+    if not asignado:
+        print(f"Proceso {proceso.id} (Tamaño: {proceso.tamaño}) no pudo ser asignado.")
+
+# Mostrar el estado final
+print("\nEstado final de las particiones:")
+for i, particion in enumerate(particiones):
+    if particion.proceso:
+        print(f"Partición {i+1} (Tamaño: {particion.tamaño}) -> Proceso {particion.proceso.id}")
+    else:
+        print(f"Partición {i+1} (Tamaño: {particion.tamaño}) -> Vacía")
+```
+
+
+### **2. Algoritmo para asignar procesos usando "Primera Cabida"**
+
+El algoritmo "Primera Cabida" asigna cada proceso al primer bloque de memoria que sea lo suficientemente grande. Aquí está la implementación:
+
+```python
+class BloqueMemoria:
+    def __init__(self, tamaño):
+        self.tamaño = tamaño
+        self.proceso = None
+
+    def asignar_proceso(self, proceso):
+        if proceso.tamaño <= self.tamaño:
+            self.proceso = proceso
+            self.tamaño -= proceso.tamaño  # Reducir el tamaño disponible
+            return True
+        return False
+
+
+class Proceso:
+    def __init__(self, id, tamaño):
+        self.id = id
+        self.tamaño = tamaño
+
+
+# Configuración inicial
+bloques = [BloqueMemoria(400), BloqueMemoria(200), BloqueMemoria(300)]  # Bloques de memoria disponibles
+procesos = [Proceso(1, 150), Proceso(2, 100), Proceso(3, 250), Proceso(4, 300)]  # Procesos
+
+# Algoritmo de primera cabida
+for proceso in procesos:
+    asignado = False
+    for bloque in bloques:
+        if bloque.asignar_proceso(proceso):
+            print(f"Proceso {proceso.id} (Tamaño: {proceso.tamaño}) asignado al bloque de tamaño {bloque.tamaño + proceso.tamaño}.")
+            asignado = True
+            break
+    if not asignado:
+        print(f"Proceso {proceso.id} (Tamaño: {proceso.tamaño}) no pudo ser asignado.")
+
+# Mostrar el estado final
+print("\nEstado final de los bloques de memoria:")
+for i, bloque in enumerate(bloques):
+    if bloque.proceso:
+        print(f"Bloque {i+1} (Espacio restante: {bloque.tamaño}) -> Proceso {bloque.proceso.id}")
+    else:
+        print(f"Bloque {i+1} (Espacio restante: {bloque.tamaño}) -> Vacío")
+```
+
+
+Ambos programas son fáciles de modificar dependiendo de los tamaños de particiones o procesos que desee simular.
+
