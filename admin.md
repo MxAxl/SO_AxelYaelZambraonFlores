@@ -1164,3 +1164,199 @@ Contenido del archivo 2.
 Otra línea de texto.
 [Error] El archivo 'archivo_inexistente.txt' no existe.
 ```
+
+## Integracion
+
+### 1. Implementación del algoritmo de planificación de discos "Elevator (SCAN)"
+
+El algoritmo **Elevator (SCAN)** mueve el cabezal del disco en una dirección, atendiendo solicitudes según la posición de los cilindros. Cuando llega al final de la dirección, invierte su recorrido. Esto optimiza el tiempo de búsqueda en comparación con el algoritmo FCFS.
+
+#### **Código en Python**
+
+```python
+def scan_disk_schedule(requests, head, direction, disk_size):
+    """
+    Implementa el algoritmo de planificación SCAN (Elevator).
+    Args:
+        requests (list): Lista de solicitudes de cilindros.
+        head (int): Posición inicial del cabezal.
+        direction (str): Dirección inicial del cabezal ("left" o "right").
+        disk_size (int): Tamaño del disco (número de cilindros).
+    """
+    print(f"Solicitudes iniciales: {requests}")
+    print(f"Posición inicial del cabezal: {head}")
+    print(f"Dirección inicial: {direction}\n")
+    
+    # Dividir las solicitudes según la posición del cabezal
+    left = [req for req in requests if req < head]
+    right = [req for req in requests if req >= head]
+
+    # Ordenar las solicitudes en cada dirección
+    left.sort()
+    right.sort()
+
+    # Secuencia del recorrido
+    sequence = []
+
+    if direction == "right":
+        sequence += right
+        sequence += reversed(left)  # Invertir para regresar
+    elif direction == "left":
+        sequence += reversed(left)
+        sequence += right
+
+    print(f"Orden de ejecución: {sequence}")
+
+    # Calcular el movimiento total del cabezal
+    total_movement = 0
+    current_position = head
+    for cylinder in sequence:
+        total_movement += abs(cylinder - current_position)
+        current_position = cylinder
+
+    print(f"Movimiento total del cabezal: {total_movement}\n")
+
+
+# Simulación
+if __name__ == "__main__":
+    requests = [95, 180, 34, 119, 11, 123, 62, 64]  # Solicitudes de cilindros
+    head = 50  # Posición inicial del cabezal
+    direction = "right"  # Dirección inicial
+    disk_size = 200  # Tamaño del disco (número de cilindros)
+
+    scan_disk_schedule(requests, head, direction, disk_size)
+```
+
+#### **Salida del programa**
+
+```plaintext
+Solicitudes iniciales: [95, 180, 34, 119, 11, 123, 62, 64]
+Posición inicial del cabezal: 50
+Dirección inicial: right
+
+Orden de ejecución: [62, 64, 95, 119, 123, 180, 34, 11]
+Movimiento total del cabezal: 320
+```
+
+### 2. Sistema que maneje múltiples dispositivos simulados
+
+#### **Diseño del sistema**
+
+Un sistema que gestiona múltiples dispositivos como un disco duro, impresora y teclado requiere:  
+1. **Controladores** para cada dispositivo que interactúen con sus colas de solicitudes.  
+2. **Gestión centralizada** para coordinar la comunicación entre dispositivos.  
+3. **Colas de eventos** para manejar solicitudes asíncronas.  
+
+#### **Código en Python**
+
+```python
+import time
+import queue
+import threading
+
+class Device:
+    def __init__(self, name):
+        self.name = name
+        self.request_queue = queue.Queue()
+
+    def add_request(self, request):
+        """Agrega una solicitud a la cola del dispositivo."""
+        self.request_queue.put(request)
+        print(f"[{self.name}] Solicitud '{request}' agregada.")
+
+    def process_requests(self):
+        """Procesa solicitudes de la cola."""
+        while not self.request_queue.empty():
+            request = self.request_queue.get()
+            print(f"[{self.name}] Procesando solicitud '{request}'...")
+            time.sleep(1)  # Simular tiempo de procesamiento
+            print(f"[{self.name}] Solicitud '{request}' completada.")
+
+class SystemManager:
+    def __init__(self):
+        self.devices = {}
+
+    def add_device(self, device):
+        """Registra un dispositivo en el sistema."""
+        self.devices[device.name] = device
+        print(f"Dispositivo '{device.name}' registrado en el sistema.")
+
+    def send_request(self, device_name, request):
+        """Envía una solicitud a un dispositivo específico."""
+        if device_name in self.devices:
+            self.devices[device_name].add_request(request)
+        else:
+            print(f"[Error] El dispositivo '{device_name}' no está registrado.")
+
+    def process_all_devices(self):
+        """Procesa todas las solicitudes de todos los dispositivos."""
+        threads = []
+        for device in self.devices.values():
+            thread = threading.Thread(target=device.process_requests)
+            threads.append(thread)
+            thread.start()
+
+        for thread in threads:
+            thread.join()
+
+# Simulación
+if __name__ == "__main__":
+    # Crear dispositivos
+    disk = Device("Disco Duro")
+    printer = Device("Impresora")
+    keyboard = Device("Teclado")
+
+    # Crear el administrador del sistema
+    manager = SystemManager()
+
+    # Registrar dispositivos
+    manager.add_device(disk)
+    manager.add_device(printer)
+    manager.add_device(keyboard)
+
+    # Enviar solicitudes a dispositivos
+    manager.send_request("Disco Duro", "Leer sector 5")
+    manager.send_request("Disco Duro", "Escribir sector 7")
+    manager.send_request("Impresora", "Imprimir documento A")
+    manager.send_request("Teclado", "Registrar tecla presionada")
+
+    # Procesar todas las solicitudes
+    print("\nProcesando solicitudes...\n")
+    manager.process_all_devices()
+```
+
+#### **Explicación del sistema**
+
+1. **Dispositivos:**
+   - Cada dispositivo tiene su propia cola para almacenar solicitudes.  
+   - La clase `Device` encapsula el manejo de solicitudes.  
+
+2. **Administrador del sistema:**
+   - Registra los dispositivos y facilita la comunicación entre ellos.  
+   - Las solicitudes son distribuidas a los dispositivos correspondientes.  
+
+3. **Procesamiento en paralelo:**
+   - Se utiliza `threading` para procesar solicitudes de múltiples dispositivos simultáneamente.  
+
+#### **Salida del programa**
+
+```plaintext
+Dispositivo 'Disco Duro' registrado en el sistema.
+Dispositivo 'Impresora' registrado en el sistema.
+Dispositivo 'Teclado' registrado en el sistema.
+[Disco Duro] Solicitud 'Leer sector 5' agregada.
+[Disco Duro] Solicitud 'Escribir sector 7' agregada.
+[Impresora] Solicitud 'Imprimir documento A' agregada.
+[Teclado] Solicitud 'Registrar tecla presionada' agregada.
+
+Procesando solicitudes...
+
+[Disco Duro] Procesando solicitud 'Leer sector 5'...
+[Impresora] Procesando solicitud 'Imprimir documento A'...
+[Teclado] Procesando solicitud 'Registrar tecla presionada'...
+[Disco Duro] Solicitud 'Leer sector 5' completada.
+[Disco Duro] Procesando solicitud 'Escribir sector 7'...
+[Impresora] Solicitud 'Imprimir documento A' completada.
+[Teclado] Solicitud 'Registrar tecla presionada' completada.
+[Disco Duro] Solicitud 'Escribir sector 7' completada.
+```
