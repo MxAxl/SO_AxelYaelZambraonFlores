@@ -823,8 +823,6 @@ Una **cola de E/S** es una estructura de datos que se utiliza en sistemas operat
 **Ejemplo de uso:**  
 Un disco duro con múltiples solicitudes de lectura/escritura usa una cola de E/S para procesarlas de manera eficiente, optimizando la posición del cabezal (algoritmos como SCAN o SSTF).  
 
----
-
 #### **Simulación de una cola con prioridad**  
 
 ```python
@@ -1028,4 +1026,141 @@ Dispositivo 'dev1' eliminado.
 Tabla de dispositivos:
   - dev2: {'type': 'impresora', 'status': 'idle', 'request_queue': []}
   - dev3: {'type': 'disco_duro', 'status': 'idle', 'request_queue': ['Leer sector 5']}
+```
+## 4.4 Operaciones de Entrada/Salida
+
+### 1. Flujo del proceso de lectura de un archivo desde un disco magnético
+
+#### **Flujo del proceso de lectura de un archivo**  
+
+![alt text](<napkin-selection (1).png>)
+
+#### **Simulación del proceso en código Python (básico)**  
+
+```python
+import os
+import time
+
+class DiskSimulator:
+    def __init__(self, file_system):
+        self.file_system = file_system  # Simula una tabla de archivos (diccionario)
+
+    def read_file(self, file_name):
+        """Simula el proceso de lectura de un archivo desde un disco magnético."""
+        print(f"Solicitud de lectura para el archivo '{file_name}'...")
+
+        # Paso 1: Verificar si el archivo existe en el sistema
+        if file_name not in self.file_system:
+            print("[Error] El archivo no existe en el sistema de archivos.")
+            return
+
+        # Paso 2: Obtener la ubicación física del archivo
+        file_data = self.file_system[file_name]
+        print("Accediendo a la tabla de archivos para ubicar el archivo...")
+
+        # Paso 3: Simular posicionamiento del cabezal
+        print("Moviendo el cabezal del disco...")
+        time.sleep(1)  # Simula el tiempo necesario para mover el cabezal
+
+        # Paso 4: Leer los bloques del archivo
+        print("Leyendo bloques de datos del archivo...")
+        time.sleep(1)  # Simula el tiempo necesario para leer los bloques
+        print(f"Contenido del archivo '{file_name}': {file_data}")
+
+        # Paso 5: Finalización
+        print("Lectura completada.\n")
+
+
+# Simulación de un sistema de archivos
+file_system = {
+    "documento.txt": "Este es el contenido del archivo 'documento.txt'.",
+    "reporte.csv": "ID,Nombre,Edad\n1,Juan,25\n2,Ana,30",
+    "imagen.jpg": "[Datos binarios de la imagen...]"
+}
+
+# Simulación de lectura
+if __name__ == "__main__":
+    disk = DiskSimulator(file_system)
+
+    # Leer archivos
+    disk.read_file("documento.txt")
+    disk.read_file("imagen.jpg")
+    disk.read_file("archivo_inexistente.txt")
+```
+
+### 2. Programa que realiza operaciones de entrada/salida asíncronas con archivos  
+
+Este programa utiliza las bibliotecas de Python como `asyncio` y `aiofiles` para realizar operaciones de entrada/salida asíncronas.  
+
+#### **Código en Python**
+
+```python
+import asyncio
+import aiofiles
+
+async def read_file_async(file_path):
+    """Lee un archivo de forma asíncrona y muestra su contenido."""
+    try:
+        async with aiofiles.open(file_path, mode='r') as file:
+            print(f"Leyendo el archivo '{file_path}' de forma asíncrona...")
+            content = await file.read()
+            print(f"Contenido de '{file_path}':\n{content}")
+    except FileNotFoundError:
+        print(f"[Error] El archivo '{file_path}' no existe.")
+    except Exception as e:
+        print(f"[Error] Ocurrió un problema al leer el archivo: {e}")
+
+async def write_file_async(file_path, content):
+    """Escribe datos en un archivo de forma asíncrona."""
+    try:
+        async with aiofiles.open(file_path, mode='w') as file:
+            print(f"Escribiendo datos en el archivo '{file_path}' de forma asíncrona...")
+            await file.write(content)
+            print(f"Datos escritos en '{file_path}'.")
+    except Exception as e:
+        print(f"[Error] Ocurrió un problema al escribir en el archivo: {e}")
+
+async def main():
+    """Función principal para ejecutar operaciones de entrada/salida asíncronas."""
+    # Escribir archivos
+    await write_file_async("archivo1.txt", "Este es el contenido del archivo 1.")
+    await write_file_async("archivo2.txt", "Contenido del archivo 2.\nOtra línea de texto.")
+
+    # Leer archivos
+    await read_file_async("archivo1.txt")
+    await read_file_async("archivo2.txt")
+    await read_file_async("archivo_inexistente.txt")  # Intento de lectura de un archivo inexistente
+
+# Ejecutar el programa principal
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+#### **Explicación del código**
+
+1. **Operaciones Asíncronas:**
+   - Se utiliza `aiofiles` para abrir y manejar archivos de forma asíncrona.
+   - `await` asegura que la lectura o escritura no bloquee el programa principal.  
+
+2. **Lectura y Escritura:**
+   - **`read_file_async`**: Lee un archivo línea por línea y muestra el contenido.  
+   - **`write_file_async`**: Escribe datos en un archivo de manera eficiente.  
+
+3. **Ejecución Concurrente:**
+   - Con `asyncio.run(main())`, las tareas de lectura/escritura se ejecutan de manera no bloqueante.  
+
+#### **Ejemplo de Salida**
+
+```plaintext
+Escribiendo datos en el archivo 'archivo1.txt' de forma asíncrona...
+Datos escritos en 'archivo1.txt'.
+Escribiendo datos en el archivo 'archivo2.txt' de forma asíncrona...
+Datos escritos en 'archivo2.txt'.
+Leyendo el archivo 'archivo1.txt' de forma asíncrona...
+Contenido de 'archivo1.txt':
+Este es el contenido del archivo 1.
+Leyendo el archivo 'archivo2.txt' de forma asíncrona...
+Contenido de 'archivo2.txt':
+Contenido del archivo 2.
+Otra línea de texto.
+[Error] El archivo 'archivo_inexistente.txt' no existe.
 ```
