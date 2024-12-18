@@ -232,4 +232,76 @@ for _ in range(15):  # 15 accesos aleatorios
 3. **Reemplazo**:  
    - Implementado de manera sencilla usando un marco seleccionado al azar (puedes cambiarlo a FIFO o LRU si necesitas).  
 
-## 3.4 Administración de memoria virtual   
+## 3.4 Administración de memoria virtual
+### 1. Código que implementa el algoritmo de reemplazo de página "Least Recently Used" (LRU)
+
+Aquí tienes una implementación en Python del algoritmo LRU para el reemplazo de páginas:
+
+```python
+class LRUCache:
+    def __init__(self, capacidad):
+        self.capacidad = capacidad
+        self.cache = []  # Lista para almacenar las páginas en orden de uso reciente
+
+    def acceder_pagina(self, pagina):
+        if pagina in self.cache:
+            # Si la página ya está en la caché, se actualiza su posición
+            self.cache.remove(pagina)
+            self.cache.append(pagina)
+            print(f"Página {pagina} accedida (ya estaba en memoria).")
+        else:
+            # Si la página no está en la caché
+            if len(self.cache) == self.capacidad:
+                pagina_reemplazada = self.cache.pop(0)  # Eliminar la página menos recientemente usada
+                print(f"Reemplazando página {pagina_reemplazada} con la página {pagina}.")
+            else:
+                print(f"Asignando página {pagina} (hay espacio disponible).")
+            self.cache.append(pagina)  # Añadir la nueva página a la caché
+
+    def mostrar_cache(self):
+        print(f"Estado actual de la caché: {self.cache}")
+
+
+# Simulación
+capacidad_cache = 3  # Número de marcos de memoria disponibles
+lru = LRUCache(capacidad_cache)
+
+# Secuencia de accesos a páginas
+secuencia_paginas = [1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5]
+
+print("Simulación del algoritmo LRU:")
+for pagina in secuencia_paginas:
+    print(f"\nAccediendo a la página {pagina}:")
+    lru.acceder_pagina(pagina)
+    lru.mostrar_cache()
+```
+
+
+### **Explicación del código**
+1. **Clase `LRUCache`**:  
+   - La lista `cache` mantiene las páginas en memoria en orden de uso reciente.  
+   - Cuando se accede a una página:
+     - Si está en memoria, se mueve al final (más reciente).  
+     - Si no está y la memoria está llena, se elimina la página menos recientemente usada (la primera en la lista).  
+   - Si hay espacio disponible, la página simplemente se agrega.  
+
+2. **Secuencia de prueba**:  
+   - Una lista de accesos a páginas simula el comportamiento del sistema.  
+   - Cada acceso imprime el estado de la memoria.
+
+
+### 2. Diagrama del proceso de traducción de direcciones virtuales a físicas
+
+Aquí está una descripción del diagrama para representar el proceso. El esquema básico incluye los siguientes pasos:
+
+1. **Dirección Virtual**:  
+   Una dirección lógica generada por el programa.
+
+2. **Tabla de Páginas**:  
+   La dirección virtual se divide en:
+   - **Número de página**: Identifica la página en memoria virtual.  
+   - **Desplazamiento (offset)**: Posición dentro de la página.  
+   La tabla de páginas traduce el número de página a un marco en la memoria física.
+
+3. **Dirección Física**:  
+   La dirección resultante se compone del número de marco (obtenido de la tabla) y el desplazamiento.
