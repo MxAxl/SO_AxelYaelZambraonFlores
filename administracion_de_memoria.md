@@ -41,7 +41,7 @@ Las políticas de reemplazo de páginas se usan para decidir qué página de mem
 LRU es probablemente el más eficiente en escenarios reales porque prioriza páginas con más uso reciente, optimizando el rendimiento. Aunque es más complejo, los sistemas modernos pueden manejarlo mejor con hardware y software avanzados.
 
 ## 3.2 Memoria real
-### **1. Programa en Python para simular administración de memoria con particiones fijas**
+### 1. Programa en Python para simular administración de memoria con particiones fijas.
 
 ```python
 class ParticionFija:
@@ -90,7 +90,7 @@ for i, particion in enumerate(particiones):
 ```
 
 
-### **2. Algoritmo para asignar procesos usando "Primera Cabida"**
+### 2. Algoritmo para asignar procesos usando "Primera Cabida"
 
 ```python
 class BloqueMemoria:
