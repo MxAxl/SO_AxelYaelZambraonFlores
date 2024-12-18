@@ -305,3 +305,19 @@ Aquí está una descripción del diagrama para representar el proceso. El esquem
 
 3. **Dirección Física**:  
    La dirección resultante se compone del número de marco (obtenido de la tabla) y el desplazamiento.
+
+```
+| Generación de Dirección Virtual       |
+| ↓                                     |
+| Consulta a la Tabla de Páginas        |
+| ↓                                     |
+| Verificación de la Validez            |
+| ↓                                     |
+| Manejo de Page Fault                  |
+| ↓                                     |
+| Actualización de la Tabla de Páginas  |
+| ↓                                     |
+| Acceso a la Memoria Física            |
+| ↓                                     |
+| Finalización del Proceso              |
+```
