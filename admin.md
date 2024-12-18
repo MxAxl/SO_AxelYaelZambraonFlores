@@ -322,6 +322,150 @@ Aquí está una descripción del diagrama para representar el proceso. El esquem
 | Finalización del Proceso              |
 ```
 ## Integración
+### 1. Administración de Memoria Virtual en un Sistema Operativo Moderno: Linux
 
+En **Linux**, la administración de memoria virtual es realizada principalmente por el **MMU** (Unidad de Gestión de Memoria) y el kernel, utilizando una combinación de **paginación** y **swapping**.  
+
+#### **Funcionamiento básico**:
+- **Paginación**: La memoria virtual está dividida en bloques llamados **páginas**, típicamente de 4 KB. Estas páginas se asignan a **marcos de memoria física**, permitiendo que un proceso acceda a memoria no contigua.  
+- **Tabla de Páginas**: Cada proceso tiene su propia tabla de páginas, que mapea páginas virtuales a marcos físicos. Cuando un proceso intenta acceder a una dirección virtual, el sistema consulta la tabla para traducirla en una dirección física.  
+- **Page Fault**: Si una página no está presente en memoria física, se genera un **page fault**. El kernel trae la página requerida desde el **swap** (espacio en disco) a la memoria física.  
+- **Swapping**: Cuando no hay suficiente memoria física, el sistema operativo selecciona páginas menos usadas (a través de algoritmos como LRU) y las escribe al archivo de **swap** en disco.  
+- **Cache y Buffers**: Linux también administra cachés y buffers en memoria para optimizar accesos frecuentes.  
+
+#### **Ventajas**:  
+- Permite que los procesos utilicen más memoria que la disponible físicamente.  
+- Optimiza el uso de la RAM y evita fragmentación externa.  
+
+#### **Desventajas**:  
+- El acceso a la memoria swap es mucho más lento que a la memoria RAM.  
+- Un uso excesivo del swap puede provocar **thrashing**, donde el sistema pasa más tiempo intercambiando páginas que ejecutando procesos.
+
+### 2. Simulación de Swapping de Procesos en Memoria Virtual
+
+#### **Código:**
+```python
+import time
+import random
+
+class Proceso:
+    def __init__(self, id, tamaño):
+        self.id = id
+        self.tamaño = tamaño  # Tamaño de memoria requerido por el proceso
+
+class SistemaMemoria:
+    def __init__(self, memoria_total, tamaño_swap):
+        self.memoria_total = memoria_total  # Capacidad de memoria física
+        self.memoria_disponible = memoria_total
+        self.swap = []  # Swap en disco
+        self.tamaño_swap = tamaño_swap
+        self.procesos_en_memoria = []  # Procesos activos en memoria
+
+    def cargar_proceso(self, proceso):
+        if proceso.tamaño <= self.memoria_disponible:
+            self.procesos_en_memoria.append(proceso)
+            self.memoria_disponible -= proceso.tamaño
+            print(f"Proceso {proceso.id} cargado en memoria. Memoria disponible: {self.memoria_disponible}")
+        else:
+            print(f"Memoria insuficiente para el proceso {proceso.id}. Realizando swapping...")
+            self.realizar_swapping(proceso)
+
+    def realizar_swapping(self, nuevo_proceso):
+        # Simular intercambio del proceso menos usado (FIFO en este ejemplo)
+        if not self.procesos_en_memoria:
+            print("No hay procesos en memoria para hacer swapping.")
+            return
+
+        proceso_swap = self.procesos_en_memoria.pop(0)  # Eliminar el primer proceso
+        self.swap.append(proceso_swap)
+        self.memoria_disponible += proceso_swap.tamaño
+        print(f"Proceso {proceso_swap.id} enviado a swap. Memoria liberada: {proceso_swap.tamaño}")
+        print(f"Memoria disponible: {self.memoria_disponible}")
+
+        # Cargar el nuevo proceso en memoria
+        self.cargar_proceso(nuevo_proceso)
+
+    def mostrar_estado(self):
+        print("\n--- Estado del Sistema ---")
+        print("Procesos en Memoria:")
+        for p in self.procesos_en_memoria:
+            print(f"Proceso {p.id} - Tamaño: {p.tamaño}")
+        print("\nSwap:")
+        for p in self.swap:
+            print(f"Proceso {p.id} - Tamaño: {p.tamaño}")
+        print(f"\nMemoria Disponible: {self.memoria_disponible}")
+        print("--------------------------")
+
+# Configuración inicial
+memoria_total = 200  # Capacidad total de memoria física
+tamaño_swap = 300    # Tamaño del swap en disco
+sistema = SistemaMemoria(memoria_total, tamaño_swap)
+
+# Simulación de procesos
+procesos = [Proceso(i, random.randint(50, 100)) for i in range(1, 6)]
+
+# Cargar procesos en memoria
+for proceso in procesos:
+    print(f"\nIntentando cargar Proceso {proceso.id} (Tamaño: {proceso.tamaño})")
+    sistema.cargar_proceso(proceso)
+    sistema.mostrar_estado()
+    time.sleep(1)  # Simulación de tiempo de procesamiento
+```
+
+
+### **Explicación del código**:
+1. **Clase `Proceso`**: Representa un proceso con un ID y un tamaño de memoria requerido.
+2. **Clase `SistemaMemoria`**:  
+   - Administra la memoria física y el swap.  
+   - Si no hay suficiente memoria para un nuevo proceso, realiza swapping eliminando un proceso menos reciente (FIFO).  
+3. **Simulación**:  
+   - Se generan procesos con tamaños aleatorios.  
+   - Cada proceso se intenta cargar en memoria; si no hay espacio, el sistema realiza swapping.  
+   - Se imprime el estado actual de la memoria y el swap después de cada acción.
+
+
+### **Salida esperada** (Ejemplo):
+```
+Intentando cargar Proceso 1 (Tamaño: 70)
+Proceso 1 cargado en memoria. Memoria disponible: 130
+
+--- Estado del Sistema ---
+Procesos en Memoria:
+Proceso 1 - Tamaño: 70
+
+Swap:
+
+Memoria Disponible: 130
+--------------------------
+
+Intentando cargar Proceso 2 (Tamaño: 60)
+Proceso 2 cargado en memoria. Memoria disponible: 70
+
+--- Estado del Sistema ---
+Procesos en Memoria:
+Proceso 1 - Tamaño: 70
+Proceso 2 - Tamaño: 60
+
+Swap:
+
+Memoria Disponible: 70
+--------------------------
+
+Intentando cargar Proceso 3 (Tamaño: 90)
+Memoria insuficiente para el proceso 3. Realizando swapping...
+Proceso 1 enviado a swap. Memoria liberada: 70
+Proceso 3 cargado en memoria. Memoria disponible: 10
+
+--- Estado del Sistema ---
+Procesos en Memoria:
+Proceso 2 - Tamaño: 60
+Proceso 3 - Tamaño: 90
+
+Swap:
+Proceso 1 - Tamaño: 70
+
+Memoria Disponible: 10
+--------------------------
+```
 
 # Administración de Entrada/Salida
