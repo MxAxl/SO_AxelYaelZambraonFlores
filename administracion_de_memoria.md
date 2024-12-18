@@ -1,6 +1,6 @@
 # Administracion de memoria
 ## 3.1 Política y filosofía
-### Diferencia entre fragmentación interna y externa
+### Diferencia entre fragmentación interna y externa 
 
 La fragmentación interna y externa son problemas relacionados con la gestión de memoria en los sistemas operativos, pero tienen orígenes y efectos distintos.
 
@@ -40,7 +40,7 @@ Las políticas de reemplazo de páginas se usan para decidir qué página de mem
 **¿Cuál considero más eficiente y por qué?**  
 LRU es probablemente el más eficiente en escenarios reales porque prioriza páginas con más uso reciente, optimizando el rendimiento. Aunque es más complejo, los sistemas modernos pueden manejarlo mejor con hardware y software avanzados.
 
-## 3.2 Memoria Real
+## 3.2 Memoria real
 ### **1. Programa en Python para simular administración de memoria con particiones fijas**
 
 ```python
@@ -139,3 +139,97 @@ for i, bloque in enumerate(bloques):
 
 Ambos programas son fáciles de modificar dependiendo de los tamaños de particiones o procesos que desee simular.
 
+## 3.3 Organización de memoria virtual
+### 1. Concepto de paginación y segmentación
+
+#### **Paginación**  
+La **paginación** es una técnica de administración de memoria donde se divide la memoria en bloques de tamaño fijo llamados "marcos" (frames) en la memoria física y "páginas" en la memoria lógica. Cuando un proceso necesita memoria, se le asignan páginas que pueden almacenarse en cualquier marco disponible, sin necesidad de ser contiguas.
+
+**Ventajas de la paginación**:  
+- Elimina la fragmentación externa porque los bloques son de tamaño fijo.  
+- Permite usar memoria no contigua, lo que optimiza el espacio disponible.  
+- Es más fácil de implementar con hardware dedicado, como una Unidad de Gestión de Memoria (MMU).  
+
+**Desventajas de la paginación**:  
+- Puede haber fragmentación interna si las páginas no se llenan completamente.  
+- El tiempo de acceso a memoria aumenta debido a la traducción de direcciones lógicas a físicas.  
+
+#### **Segmentación**  
+La **segmentación** divide la memoria en segmentos lógicos que representan diferentes partes de un programa, como código, datos y pila. Cada segmento tiene un tamaño variable y se asigna de manera contigua en la memoria física.  
+
+**Ventajas de la segmentación**:  
+- Proporciona una visión lógica más natural para los desarrolladores.  
+- Permite ajustar mejor la memoria a las necesidades del programa (sin fragmentación interna).  
+- Facilita la protección y compartición de memoria entre procesos.  
+
+**Desventajas de la segmentación**:  
+- Puede generar fragmentación externa, ya que los segmentos tienen tamaños variables.  
+- Requiere mecanismos más complejos para el manejo de memoria y protección.  
+
+### 2. Programa para simular una tabla de páginas
+
+```python
+import random
+
+class TablaPaginas:
+    def __init__(self, num_paginas, num_marcos):
+        self.num_paginas = num_paginas
+        self.num_marcos = num_marcos
+        self.tabla = [-1] * num_paginas  # -1 indica que la página no está en memoria
+        self.marcos = [None] * num_marcos  # Marcos de memoria física
+
+    def asignar_pagina(self, pagina):
+        # Verificar si la página ya está en memoria
+        if pagina in self.tabla:
+            print(f"La página {pagina} ya está en memoria (marco {self.tabla.index(pagina)}).")
+            return
+        
+        # Buscar un marco libre
+        try:
+            marco_libre = self.marcos.index(None)
+        except ValueError:
+            # No hay marcos libres; usar reemplazo FIFO
+            marco_libre = random.randint(0, self.num_marcos - 1)
+            pagina_reemplazada = self.marcos[marco_libre]
+            self.tabla[self.tabla.index(pagina_reemplazada)] = -1
+            print(f"Reemplazando página {pagina_reemplazada} del marco {marco_libre}.")
+        
+        # Asignar la página al marco
+        self.marcos[marco_libre] = pagina
+        self.tabla[pagina] = marco_libre
+        print(f"Página {pagina} asignada al marco {marco_libre}.")
+
+    def mostrar_tabla(self):
+        print("\nTabla de Páginas:")
+        for i, marco in enumerate(self.tabla):
+            print(f"Página {i}: {'Marco ' + str(marco) if marco != -1 else 'No asignada'}")
+
+        print("\nEstado de los marcos:")
+        for i, pagina in enumerate(self.marcos):
+            print(f"Marco {i}: {'Página ' + str(pagina) if pagina is not None else 'Vacío'}")
+
+
+# Configuración inicial
+num_paginas = 10  # Número total de páginas
+num_marcos = 4    # Número total de marcos en memoria física
+tabla = TablaPaginas(num_paginas, num_marcos)
+
+# Simulación de acceso aleatorio
+print("Simulación de accesos aleatorios a memoria:")
+for _ in range(15):  # 15 accesos aleatorios
+    pagina = random.randint(0, num_paginas - 1)
+    print(f"\nAccediendo a la página {pagina}:")
+    tabla.asignar_pagina(pagina)
+    tabla.mostrar_tabla()
+```
+
+### **Explicacion de funcionalidad**  
+1. **Clase `TablaPaginas`**:  
+   - Administra las páginas y los marcos.  
+   - Mantiene una tabla que indica qué marco (si lo hay) contiene cada página.  
+2. **Acceso aleatorio**:  
+   - Simula accesos a páginas aleatorias, asignándolas a marcos libres o reemplazándolas si no hay marcos disponibles.  
+3. **Reemplazo**:  
+   - Implementado de manera sencilla usando un marco seleccionado al azar (puedes cambiarlo a FIFO o LRU si necesitas).  
+
+## 3.4 Administración de memoria virtual   
