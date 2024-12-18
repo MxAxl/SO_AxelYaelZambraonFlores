@@ -1033,7 +1033,7 @@ Tabla de dispositivos:
 
 #### **Flujo del proceso de lectura de un archivo**  
 
-![alt text](<napkin-selection (1).png>)
+![alt text](<diagrama.png>)
 
 #### **Simulación del proceso en código Python (básico)**  
 
