@@ -638,3 +638,174 @@ No hay datos para leer.
 Error simulado: Error de hardware
 Estado del búfer: []
 ```
+
+## 4.2 Mecanismos y funciones de los manejadores de dispositivos
+### 1. ¿Qué es la interrupción por E/S y cómo la administra el sistema operativo?
+
+**Interrupción por E/S (Entrada/Salida):**  
+Una interrupción por E/S es una señal enviada por un dispositivo (como un disco duro, teclado o impresora) al procesador para indicar que una operación de entrada o salida ha finalizado o necesita atención. Estas interrupciones son fundamentales en los sistemas operativos modernos, ya que permiten manejar múltiples tareas de forma eficiente, liberando al procesador de esperar por eventos o datos.  
+
+**Proceso de manejo de una interrupción por E/S:**  
+
+1. **Solicitud de interrupción:**  
+   El dispositivo genera una señal de interrupción para notificar al procesador que requiere atención.  
+
+2. **Cambio de contexto:**  
+   El procesador pausa su tarea actual y guarda su estado (registro, contadores, etc.) para retomarla después de atender la interrupción.  
+
+3. **Llamado al manejador de interrupción:**  
+   El sistema operativo ejecuta un manejador de interrupciones específico (un programa que sabe cómo responder al evento).  
+
+4. **Atención de la interrupción:**  
+   Se realiza la acción requerida, como leer datos del dispositivo o enviarle una respuesta.  
+
+5. **Retorno al contexto anterior:**  
+   Una vez atendida la interrupción, el procesador restaura el estado previo y continúa ejecutando la tarea original.  
+
+**Ejemplo en pseudocódigo:**  
+
+```plaintext
+Inicio del programa:
+    Ejecutar proceso principal.
+
+Mientras el programa esté corriendo:
+    Si un dispositivo genera una interrupción:
+        Pausar proceso actual.
+        Guardar estado del proceso.
+        Llamar al manejador de interrupciones.
+
+Manejador de interrupciones:
+    Identificar el dispositivo que generó la interrupción.
+    Realizar la acción necesaria (lectura o escritura).
+    Señalar al dispositivo que la solicitud fue atendida.
+    Restaurar el estado del proceso anterior.
+    Reanudar el proceso principal.
+
+Fin del programa.
+```
+
+Este proceso asegura que el sistema operativo responda rápidamente a eventos críticos mientras sigue trabajando en otras tareas.
+
+
+### 2. Programa que utilice el manejo de interrupciones en un sistema básico de simulación
+
+
+A continuación, presentamos un programa en Python que simula un sistema básico con manejo de interrupciones, incluyendo dispositivos ficticios que generan interrupciones aleatorias.  
+
+
+#### **Código en Python**
+
+```python
+import random
+import time
+from queue import Queue
+
+class InterruptController:
+    def __init__(self):
+        self.interrupt_queue = Queue()  # Cola para almacenar las interrupciones
+
+    def generate_interrupt(self, device_name):
+        """Simula la generación de una interrupción."""
+        print(f"[Interrupción generada] Dispositivo: {device_name}")
+        self.interrupt_queue.put(device_name)
+
+    def handle_interrupt(self):
+        """Manejador de interrupciones."""
+        if not self.interrupt_queue.empty():
+            device_name = self.interrupt_queue.get()
+            print(f"[Manejando interrupción] Dispositivo: {device_name}")
+            # Simula la acción correspondiente al dispositivo
+            if device_name == "teclado":
+                self._handle_keyboard()
+            elif device_name == "disco_duro":
+                self._handle_hard_disk()
+            elif device_name == "impresora":
+                self._handle_printer()
+            else:
+                print("[Advertencia] Dispositivo desconocido.")
+        else:
+            print("No hay interrupciones pendientes.")
+
+    def _handle_keyboard(self):
+        print("[Teclado] Leyendo entrada del usuario...")
+        time.sleep(1)  # Simula el tiempo necesario para manejar el evento
+
+    def _handle_hard_disk(self):
+        print("[Disco Duro] Realizando operación de E/S...")
+        time.sleep(2)  # Simula tiempo de acceso al disco
+
+    def _handle_printer(self):
+        print("[Impresora] Imprimiendo documento...")
+        time.sleep(3)  # Simula el proceso de impresión
+
+
+class System:
+    def __init__(self):
+        self.interrupt_controller = InterruptController()
+        self.running = True
+
+    def simulate_device_activity(self):
+        """Simula dispositivos generando interrupciones al azar."""
+        devices = ["teclado", "disco_duro", "impresora"]
+        while self.running:
+            time.sleep(random.randint(1, 3))  # Intervalo aleatorio entre interrupciones
+            device_name = random.choice(devices)
+            self.interrupt_controller.generate_interrupt(device_name)
+
+    def run(self):
+        """Ejecuta el sistema y maneja interrupciones en paralelo."""
+        print("Sistema iniciado. Presiona Ctrl+C para detener.")
+        try:
+            while self.running:
+                self.interrupt_controller.handle_interrupt()
+                time.sleep(1)  # Ciclo principal del sistema
+        except KeyboardInterrupt:
+            print("\nSistema detenido por el usuario.")
+            self.running = False
+
+
+# Simulación del sistema
+if __name__ == "__main__":
+    system = System()
+
+    # Simular actividad de dispositivos en un hilo separado (si fuera necesario)
+    import threading
+
+    device_thread = threading.Thread(target=system.simulate_device_activity, daemon=True)
+    device_thread.start()
+
+    # Ejecutar el sistema
+    system.run()
+```
+
+#### **Explicación del Programa**
+
+1. **Controlador de Interrupciones (`InterruptController`):**
+   - Se encarga de manejar las interrupciones generadas por diferentes dispositivos.  
+   - Usa una cola para almacenar las solicitudes de interrupción.  
+
+2. **Manejadores Específicos:**
+   - Métodos como `_handle_keyboard`, `_handle_hard_disk`, y `_handle_printer` simulan las acciones requeridas para manejar eventos generados por cada tipo de dispositivo.  
+
+3. **Sistema Principal (`System`):**
+   - Tiene un ciclo principal que constantemente verifica y maneja interrupciones pendientes.  
+   - Simula la actividad de dispositivos que generan interrupciones al azar.  
+
+4. **Interrupciones Concurrentes:**
+   - Se usa un hilo para simular que los dispositivos generan interrupciones mientras el sistema principal las maneja.  
+
+#### **Ejemplo de Salida**
+
+```plaintext
+Sistema iniciado. Presiona Ctrl+C para detener.
+No hay interrupciones pendientes.
+[Interrupción generada] Dispositivo: teclado
+[Manejando interrupción] Dispositivo: teclado
+[Teclado] Leyendo entrada del usuario...
+[Interrupción generada] Dispositivo: impresora
+[Manejando interrupción] Dispositivo: impresora
+[Impresora] Imprimiendo documento...
+[Interrupción generada] Dispositivo: disco_duro
+[Manejando interrupción] Dispositivo: disco_duro
+[Disco Duro] Realizando operación de E/S...
+```
