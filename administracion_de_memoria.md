@@ -40,7 +40,7 @@ Las políticas de reemplazo de páginas se usan para decidir qué página de mem
 **¿Cuál considero más eficiente y por qué?**  
 LRU es probablemente el más eficiente en escenarios reales porque prioriza páginas con más uso reciente, optimizando el rendimiento. Aunque es más complejo, los sistemas modernos pueden manejarlo mejor con hardware y software avanzados.
 
-## Memoria Real
+## 3.2 Memoria Real
 ### **1. Programa en Python para simular administración de memoria con particiones fijas**
 
 ```python
