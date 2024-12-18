@@ -470,4 +470,171 @@ Memoria Disponible: 10
 
 # Administración de Entrada/Salida
 ## 4.1 Dispositivos y manejadores de dispositivos
+### 1. Diferencia entre dispositivos de bloque y dispositivos de carácter
 
+Los dispositivos de bloque y dispositivos de carácter son dos tipos fundamentales de dispositivos manejados por el sistema operativo.  
+
+- **Dispositivos de bloque:**  
+  - Acceden a los datos en bloques de tamaño fijo (típicamente de 512 bytes o múltiplos).  
+  - Soportan operaciones de acceso aleatorio, lo que significa que es posible leer/escribir en cualquier posición del dispositivo directamente.  
+  - Son ideales para almacenamiento masivo.  
+  - **Ejemplo:** Discos duros, SSDs, memorias USB.  
+
+- **Dispositivos de carácter:**  
+  - Transfieren datos un carácter o byte a la vez.  
+  - Son dispositivos orientados a flujo, lo que significa que no admiten acceso aleatorio.  
+  - Se utilizan comúnmente para dispositivos de entrada y salida secuencial.  
+  - **Ejemplo:** Teclados, ratones, terminales de consola.  
+
+### 2. Diseño de un programa para un manejador de dispositivos sencillo  
+
+```python
+import logging
+import random
+import time
+
+# Configuración del registro de actividad
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    filename="device_log.txt",
+    filemode="w",
+)
+
+
+class VirtualDevice:
+    def __init__(self, buffer_size=5):
+        self.buffer = []  # Almacén para los datos recibidos
+        self.buffer_size = buffer_size  # Tamaño máximo del búfer
+        self.interrupt_enabled = False  # Bandera para simular interrupciones
+
+    def write_to_device(self, data):
+        """Simula la entrada de datos al dispositivo."""
+        if len(self.buffer) >= self.buffer_size:
+            logging.warning("Error: El búfer está lleno. No se pueden escribir más datos.")
+            raise BufferError("El búfer está lleno.")
+        self.buffer.append(data)
+        logging.info(f"Escribiendo datos al dispositivo: {data}")
+        print(f"Escribiendo datos al dispositivo: {data}")
+
+        if self.interrupt_enabled:
+            self._trigger_interrupt("Datos escritos exitosamente")
+
+    def read_from_device(self):
+        """Lee datos del búfer del dispositivo."""
+        if not self.buffer:
+            logging.warning("Error: No hay datos para leer.")
+            print("No hay datos para leer.")
+            return None
+        data = self.buffer.pop(0)
+        logging.info(f"Leyendo datos del dispositivo: {data}")
+        print(f"Leyendo datos del dispositivo: {data}")
+        return data
+
+    def buffer_status(self):
+        """Muestra el estado actual del búfer."""
+        status = f"Estado del búfer: {self.buffer}"
+        logging.info(status)
+        print(status)
+        return status
+
+    def enable_interrupts(self):
+        """Habilita las interrupciones simuladas."""
+        self.interrupt_enabled = True
+        logging.info("Interrupciones habilitadas.")
+        print("Interrupciones habilitadas.")
+
+    def disable_interrupts(self):
+        """Deshabilita las interrupciones simuladas."""
+        self.interrupt_enabled = False
+        logging.info("Interrupciones deshabilitadas.")
+        print("Interrupciones deshabilitadas.")
+
+    def _trigger_interrupt(self, message):
+        """Simula el manejo de una interrupción."""
+        logging.info(f"Interrupción: {message}")
+        print(f"Interrupción manejada: {message}")
+
+    def simulate_error(self):
+        """Simula un error aleatorio del dispositivo."""
+        error_types = ["Error de conexión", "Error de hardware", "Error desconocido"]
+        error = random.choice(error_types)
+        logging.error(f"Error simulado: {error}")
+        print(f"Error simulado: {error}")
+        return error
+
+
+# Simulación de uso
+if __name__ == "__main__":
+    device = VirtualDevice(buffer_size=3)
+
+    try:
+        # Habilitar interrupciones
+        device.enable_interrupts()
+
+        # Escribir datos al dispositivo
+        device.write_to_device("Dato1")
+        device.write_to_device("Dato2")
+        device.write_to_device("Dato3")
+
+        # Intentar escribir cuando el búfer está lleno
+        try:
+            device.write_to_device("Dato4")
+        except BufferError as e:
+            print(f"Excepción capturada: {e}")
+
+        # Leer datos del dispositivo
+        device.read_from_device()
+        device.read_from_device()
+        device.read_from_device()
+        device.read_from_device()  # Intento de leer más allá de los datos disponibles
+
+        # Simular error del dispositivo
+        device.simulate_error()
+
+        # Mostrar el estado del búfer
+        device.buffer_status()
+
+    except Exception as e:
+        logging.critical(f"Excepción no manejada: {e}")
+        print(f"Excepción no manejada: {e}")
+```
+
+### Nuevas Funcionalidades Incluidas  
+
+1. **Manejo de Errores:**
+   - El programa controla errores como intentar escribir en un búfer lleno mediante la excepción `BufferError`.
+   - Maneja intentos de leer cuando el búfer está vacío con mensajes de advertencia y registros en el log.
+
+2. **Interrupciones Simuladas:**
+   - Se añade la capacidad de habilitar/deshabilitar interrupciones.
+   - Cada vez que se escribe un dato al dispositivo, si las interrupciones están habilitadas, se genera un mensaje de interrupción.
+
+3. **Registro de Actividad (Logging):**
+   - Cada acción (lectura, escritura, error) se registra en un archivo `device_log.txt` con detalles como fecha y hora.
+   - Se incluyen niveles de registro: `INFO` para eventos normales, `WARNING` para advertencias y `ERROR/CRITICAL` para errores.
+
+4. **Simulación de Errores del Dispositivo:**
+   - Se incluye un método para simular errores aleatorios que podrían ocurrir en un dispositivo real, como problemas de conexión o fallos de hardware.
+
+5. **Limitación del Búfer:**
+   - El tamaño del búfer es configurable, simulando la capacidad limitada de un dispositivo real.
+
+### Ejemplo de Salida  
+
+```
+Interrupciones habilitadas.
+Escribiendo datos al dispositivo: Dato1
+Interrupción manejada: Datos escritos exitosamente
+Escribiendo datos al dispositivo: Dato2
+Interrupción manejada: Datos escritos exitosamente
+Escribiendo datos al dispositivo: Dato3
+Interrupción manejada: Datos escritos exitosamente
+Excepción capturada: El búfer está lleno.
+Leyendo datos del dispositivo: Dato1
+Leyendo datos del dispositivo: Dato2
+Leyendo datos del dispositivo: Dato3
+No hay datos para leer.
+Error simulado: Error de hardware
+Estado del búfer: []
+```
