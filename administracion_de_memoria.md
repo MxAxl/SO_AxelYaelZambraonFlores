@@ -92,8 +92,6 @@ for i, particion in enumerate(particiones):
 
 ### **2. Algoritmo para asignar procesos usando "Primera Cabida"**
 
-El algoritmo "Primera Cabida" asigna cada proceso al primer bloque de memoria que sea lo suficientemente grande. Aquí está la implementación:
-
 ```python
 class BloqueMemoria:
     def __init__(self, tamaño):
