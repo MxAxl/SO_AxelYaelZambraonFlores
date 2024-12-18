@@ -469,3 +469,5 @@ Memoria Disponible: 10
 ```
 
 # Administración de Entrada/Salida
+## 4.1 Dispositivos y manejadores de dispositivos
+
