@@ -224,7 +224,7 @@ for _ in range(15):  # 15 accesos aleatorios
 ```
 
 ### **Explicacion de funcionalidad**  
-1. **Clase `TablaPaginas`**:  
+1. **Clase TablaPaginas**:  
    - Administra las páginas y los marcos.  
    - Mantiene una tabla que indica qué marco (si lo hay) contiene cada página.  
 2. **Acceso aleatorio**:  
@@ -278,8 +278,8 @@ for pagina in secuencia_paginas:
 
 
 ### **Explicación del código**
-1. **Clase `LRUCache`**:  
-   - La lista `cache` mantiene las páginas en memoria en orden de uso reciente.  
+1. **Clase LRUCache**:  
+   - La lista cache mantiene las páginas en memoria en orden de uso reciente.  
    - Cuando se accede a una página:
      - Si está en memoria, se mueve al final (más reciente).  
      - Si no está y la memoria está llena, se elimina la página menos recientemente usada (la primera en la lista).  
@@ -414,8 +414,8 @@ for proceso in procesos:
 
 
 ### **Explicación del código**:
-1. **Clase `Proceso`**: Representa un proceso con un ID y un tamaño de memoria requerido.
-2. **Clase `SistemaMemoria`**:  
+1. **Clase Proceso**: Representa un proceso con un ID y un tamaño de memoria requerido.
+2. **Clase SistemaMemoria**:  
    - Administra la memoria física y el swap.  
    - Si no hay suficiente memoria para un nuevo proceso, realiza swapping eliminando un proceso menos reciente (FIFO).  
 3. **Simulación**:  
@@ -603,7 +603,7 @@ if __name__ == "__main__":
 ### Nuevas Funcionalidades Incluidas  
 
 1. **Manejo de Errores:**
-   - El programa controla errores como intentar escribir en un búfer lleno mediante la excepción `BufferError`.
+   - El programa controla errores como intentar escribir en un búfer lleno mediante la excepción BufferError.
    - Maneja intentos de leer cuando el búfer está vacío con mensajes de advertencia y registros en el log.
 
 2. **Interrupciones Simuladas:**
@@ -611,8 +611,8 @@ if __name__ == "__main__":
    - Cada vez que se escribe un dato al dispositivo, si las interrupciones están habilitadas, se genera un mensaje de interrupción.
 
 3. **Registro de Actividad (Logging):**
-   - Cada acción (lectura, escritura, error) se registra en un archivo `device_log.txt` con detalles como fecha y hora.
-   - Se incluyen niveles de registro: `INFO` para eventos normales, `WARNING` para advertencias y `ERROR/CRITICAL` para errores.
+   - Cada acción (lectura, escritura, error) se registra en un archivo device_log.txt con detalles como fecha y hora.
+   - Se incluyen niveles de registro: INFO para eventos normales, WARNING para advertencias y ERROR/CRITICAL para errores.
 
 4. **Simulación de Errores del Dispositivo:**
    - Se incluye un método para simular errores aleatorios que podrían ocurrir en un dispositivo real, como problemas de conexión o fallos de hardware.
@@ -780,14 +780,14 @@ if __name__ == "__main__":
 
 #### **Explicación del Programa**
 
-1. **Controlador de Interrupciones (`InterruptController`):**
+1. **Controlador de Interrupciones (InterruptController):**
    - Se encarga de manejar las interrupciones generadas por diferentes dispositivos.  
    - Usa una cola para almacenar las solicitudes de interrupción.  
 
 2. **Manejadores Específicos:**
-   - Métodos como `_handle_keyboard`, `_handle_hard_disk`, y `_handle_printer` simulan las acciones requeridas para manejar eventos generados por cada tipo de dispositivo.  
+   - Métodos como _handle_keyboard, _handle_hard_disk, y _handle_printer simulan las acciones requeridas para manejar eventos generados por cada tipo de dispositivo.  
 
-3. **Sistema Principal (`System`):**
+3. **Sistema Principal (System):**
    - Tiene un ciclo principal que constantemente verifica y maneja interrupciones pendientes.  
    - Simula la actividad de dispositivos que generan interrupciones al azar.  
 
@@ -808,4 +808,224 @@ No hay interrupciones pendientes.
 [Interrupción generada] Dispositivo: disco_duro
 [Manejando interrupción] Dispositivo: disco_duro
 [Disco Duro] Realizando operación de E/S...
+```
+## 4.3 Estructuras de datos para manejo de dispositivos
+
+### 1. ¿Qué es una cola de E/S?**  
+
+Una **cola de E/S** es una estructura de datos que se utiliza en sistemas operativos para gestionar las solicitudes de entrada/salida (E/S) de los dispositivos. Las solicitudes son encoladas y atendidas de acuerdo con un criterio, como el orden de llegada (FIFO) o basado en prioridades.  
+
+**Características principales:**  
+- **Eficiencia:** Organiza múltiples solicitudes para un dispositivo, minimizando tiempos de espera.  
+- **Sincronización:** Permite a los dispositivos procesar una solicitud a la vez, manejando otras en espera.  
+- **Priorización:** En algunos casos, solicitudes más urgentes (como un acceso al disco para datos críticos) tienen mayor prioridad.  
+
+**Ejemplo de uso:**  
+Un disco duro con múltiples solicitudes de lectura/escritura usa una cola de E/S para procesarlas de manera eficiente, optimizando la posición del cabezal (algoritmos como SCAN o SSTF).  
+
+---
+
+#### **Simulación de una cola con prioridad**  
+
+```python
+import heapq
+
+class PriorityQueue:
+    def __init__(self):
+        self.queue = []  # Usamos una lista como base para la cola de prioridad
+
+    def enqueue(self, priority, request):
+        """Agrega una solicitud con prioridad a la cola."""
+        heapq.heappush(self.queue, (priority, request))
+        print(f"Solicitud '{request}' agregada con prioridad {priority}.")
+
+    def dequeue(self):
+        """Procesa la solicitud con mayor prioridad."""
+        if self.is_empty():
+            print("La cola de E/S está vacía. No hay solicitudes para procesar.")
+            return None
+        priority, request = heapq.heappop(self.queue)
+        print(f"Procesando solicitud '{request}' con prioridad {priority}.")
+        return request
+
+    def peek(self):
+        """Muestra la solicitud con mayor prioridad sin eliminarla."""
+        if self.is_empty():
+            print("La cola de E/S está vacía.")
+            return None
+        return self.queue[0]
+
+    def is_empty(self):
+        """Verifica si la cola está vacía."""
+        return len(self.queue) == 0
+
+    def display_queue(self):
+        """Muestra el estado actual de la cola."""
+        print("Estado actual de la cola de E/S:")
+        for priority, request in sorted(self.queue):
+            print(f"  - Solicitud '{request}' (Prioridad: {priority})")
+
+
+# Simulación
+if __name__ == "__main__":
+    priority_queue = PriorityQueue()
+
+    # Agregar solicitudes
+    priority_queue.enqueue(2, "Leer archivo A")
+    priority_queue.enqueue(1, "Escribir en disco B")
+    priority_queue.enqueue(3, "Imprimir documento C")
+
+    # Mostrar la cola
+    priority_queue.display_queue()
+
+    # Procesar solicitudes
+    priority_queue.dequeue()
+    priority_queue.dequeue()
+
+    # Mostrar el estado después de procesar
+    priority_queue.display_queue()
+
+    # Agregar nuevas solicitudes
+    priority_queue.enqueue(1, "Actualizar índice del disco D")
+
+    # Procesar otra solicitud
+    priority_queue.dequeue()
+
+    # Mostrar la cola final
+    priority_queue.display_queue()
+```
+
+#### **Explicación del código**  
+
+- **enqueue(priority, request)**: Agrega solicitudes con prioridad a la cola.  
+- **dequeue()**: Procesa y elimina la solicitud con mayor prioridad (valor numérico más bajo).  
+- **peek()**: Permite ver la siguiente solicitud a procesar sin eliminarla.  
+- **Uso de heapq:** Implementa una cola de prioridad de manera eficiente.  
+
+### 2. Manejador de dispositivos utilizando una tabla de estructuras  
+
+En esta sección, diseñaremos un manejador que utiliza una **tabla de estructuras** para administrar dispositivos. Cada dispositivo tiene un conjunto de propiedades (ID, tipo, estado, solicitudes pendientes, etc.).  
+
+##### **Código en Python**
+
+```python
+class DeviceManager:
+    def __init__(self):
+        self.device_table = {}  # Tabla para almacenar los dispositivos
+
+    def add_device(self, device_id, device_type):
+        """Registra un nuevo dispositivo en la tabla."""
+        if device_id in self.device_table:
+            print(f"Error: El dispositivo {device_id} ya está registrado.")
+            return
+        self.device_table[device_id] = {
+            "type": device_type,
+            "status": "idle",  # Estado inicial
+            "request_queue": []  # Cola de solicitudes asociada al dispositivo
+        }
+        print(f"Dispositivo '{device_id}' de tipo '{device_type}' registrado.")
+
+    def remove_device(self, device_id):
+        """Elimina un dispositivo de la tabla."""
+        if device_id not in self.device_table:
+            print(f"Error: El dispositivo {device_id} no existe.")
+            return
+        del self.device_table[device_id]
+        print(f"Dispositivo '{device_id}' eliminado.")
+
+    def add_request(self, device_id, request):
+        """Agrega una solicitud a la cola del dispositivo."""
+        if device_id not in self.device_table:
+            print(f"Error: El dispositivo {device_id} no existe.")
+            return
+        self.device_table[device_id]["request_queue"].append(request)
+        print(f"Solicitud '{request}' agregada al dispositivo '{device_id}'.")
+
+    def process_request(self, device_id):
+        """Procesa la siguiente solicitud en la cola del dispositivo."""
+        if device_id not in self.device_table:
+            print(f"Error: El dispositivo {device_id} no existe.")
+            return
+        if not self.device_table[device_id]["request_queue"]:
+            print(f"El dispositivo '{device_id}' no tiene solicitudes pendientes.")
+            return
+        request = self.device_table[device_id]["request_queue"].pop(0)
+        self.device_table[device_id]["status"] = "busy"
+        print(f"Procesando solicitud '{request}' en el dispositivo '{device_id}'.")
+        # Simular que el dispositivo vuelve a estar disponible
+        self.device_table[device_id]["status"] = "idle"
+
+    def display_devices(self):
+        """Muestra la tabla de dispositivos."""
+        print("Tabla de dispositivos:")
+        for device_id, details in self.device_table.items():
+            print(f"  - {device_id}: {details}")
+
+
+# Simulación
+if __name__ == "__main__":
+    manager = DeviceManager()
+
+    # Registrar dispositivos
+    manager.add_device("dev1", "teclado")
+    manager.add_device("dev2", "impresora")
+    manager.add_device("dev3", "disco_duro")
+
+    # Agregar solicitudes
+    manager.add_request("dev1", "Escribir carácter A")
+    manager.add_request("dev2", "Imprimir página 1")
+    manager.add_request("dev3", "Leer sector 5")
+
+    # Mostrar la tabla de dispositivos
+    manager.display_devices()
+
+    # Procesar solicitudes
+    manager.process_request("dev1")
+    manager.process_request("dev2")
+
+    # Mostrar el estado después de procesar
+    manager.display_devices()
+
+    # Eliminar un dispositivo
+    manager.remove_device("dev1")
+    manager.display_devices()
+```
+
+##### **Explicación del código**
+
+1. **Tabla de dispositivos (device_table):**
+   - Es un diccionario que asocia cada dispositivo con su tipo, estado y cola de solicitudes.  
+
+2. **Métodos principales:**
+   - add_device: Registra nuevos dispositivos.  
+   - remove_device: Elimina dispositivos de la tabla.  
+   - add_request: Agrega solicitudes a la cola de un dispositivo.  
+   - process_request: Procesa la primera solicitud en la cola del dispositivo y actualiza su estado.  
+
+3. **Interacción:**
+   - Puedes registrar dispositivos, agregarles solicitudes y procesarlas de manera ordenada.  
+
+#### **Ejemplo de salida**
+
+```plaintext
+Dispositivo 'dev1' de tipo 'teclado' registrado.
+Dispositivo 'dev2' de tipo 'impresora' registrado.
+Dispositivo 'dev3' de tipo 'disco_duro' registrado.
+Solicitud 'Escribir carácter A' agregada al dispositivo 'dev1'.
+Solicitud 'Imprimir página 1' agregada al dispositivo 'dev2'.
+Solicitud 'Leer sector 5' agregada al dispositivo 'dev3'.
+Tabla de dispositivos:
+  - dev1: {'type': 'teclado', 'status': 'idle', 'request_queue': ['Escribir carácter A']}
+  - dev2: {'type': 'impresora', 'status': 'idle', 'request_queue': ['Imprimir página 1']}
+  - dev3: {'type': 'disco_duro', 'status': 'idle', 'request_queue': ['Leer sector 5']}
+Procesando solicitud 'Escribir carácter A' en el dispositivo 'dev1'.
+Procesando solicitud 'Imprimir página 1' en el dispositivo 'dev2'.
+Tabla de dispositivos:
+  - dev1: {'type': 'teclado', 'status': 'idle', 'request_queue': []}
+  - dev2: {'type': 'impresora', 'status': 'idle', 'request_queue': []}
+  - dev3: {'type': 'disco_duro', 'status': 'idle', 'request_queue': ['Leer sector 5']}
+Dispositivo 'dev1' eliminado.
+Tabla de dispositivos:
+  - dev2: {'type': 'impresora', 'status': 'idle', 'request_queue': []}
+  - dev3: {'type': 'disco_duro', 'status': 'idle', 'request_queue': ['Leer sector 5']}
 ```
