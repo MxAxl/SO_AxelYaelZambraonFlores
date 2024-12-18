@@ -1090,7 +1090,7 @@ if __name__ == "__main__":
 
 ### 2. Programa que realiza operaciones de entrada/salida asíncronas con archivos  
 
-Este programa utiliza las bibliotecas de Python como `asyncio` y `aiofiles` para realizar operaciones de entrada/salida asíncronas.  
+Este programa utiliza las bibliotecas de Python como asyncio y aiofiles para realizar operaciones de entrada/salida asíncronas.  
 
 #### **Código en Python**
 
@@ -1138,15 +1138,15 @@ if __name__ == "__main__":
 #### **Explicación del código**
 
 1. **Operaciones Asíncronas:**
-   - Se utiliza `aiofiles` para abrir y manejar archivos de forma asíncrona.
-   - `await` asegura que la lectura o escritura no bloquee el programa principal.  
+   - Se utiliza aiofiles para abrir y manejar archivos de forma asíncrona.
+   - await asegura que la lectura o escritura no bloquee el programa principal.  
 
 2. **Lectura y Escritura:**
-   - **`read_file_async`**: Lee un archivo línea por línea y muestra el contenido.  
-   - **`write_file_async`**: Escribe datos en un archivo de manera eficiente.  
+   - **read_file_async**: Lee un archivo línea por línea y muestra el contenido.  
+   - **write_file_async**: Escribe datos en un archivo de manera eficiente.  
 
 3. **Ejecución Concurrente:**
-   - Con `asyncio.run(main())`, las tareas de lectura/escritura se ejecutan de manera no bloqueante.  
+   - Con asyncio.run(main()), las tareas de lectura/escritura se ejecutan de manera no bloqueante.  
 
 #### **Ejemplo de Salida**
 
@@ -1329,14 +1329,14 @@ if __name__ == "__main__":
 
 1. **Dispositivos:**
    - Cada dispositivo tiene su propia cola para almacenar solicitudes.  
-   - La clase `Device` encapsula el manejo de solicitudes.  
+   - La clase Device encapsula el manejo de solicitudes.  
 
 2. **Administrador del sistema:**
    - Registra los dispositivos y facilita la comunicación entre ellos.  
    - Las solicitudes son distribuidas a los dispositivos correspondientes.  
 
 3. **Procesamiento en paralelo:**
-   - Se utiliza `threading` para procesar solicitudes de múltiples dispositivos simultáneamente.  
+   - Se utiliza threading para procesar solicitudes de múltiples dispositivos simultáneamente.  
 
 #### **Salida del programa**
 
