@@ -134,27 +134,8 @@ Los sistemas de archivos deben gestionar los accesos según permisos asignados a
 En la mayoría de los sistemas de archivos, los archivos y directorios están organizados de forma lógica en una estructura jerárquica similar a un árbol. 
 
 #### Ejemplo de Árbol Jerárquico
-```plaintext
-/
-├── home/
-│   ├── usuario/
-│   │   ├── documentos/
-│   │   │   ├── proyecto.md
-│   │   │   ├── informe.pdf
-│   │   └── imágenes/
-│   │       ├── foto1.jpg
-│   │       ├── foto2.png
-│   └── compartido/
-├── var/
-│   ├── log/
-│   │   ├── system.log
-│   │   ├── auth.log
-├── etc/
-│   ├── config.conf
-└── dev/
-    ├── sda
-    ├── sdb
-```
+
+![alt text](<imagen 2.png>)
 
 #### Explicación:
 1. **Raíz (/):** Es el directorio base del sistema.
