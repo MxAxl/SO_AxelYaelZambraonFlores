@@ -319,29 +319,7 @@ Aquí tienes el desarrollo detallado del **Ejercicio 5: Modelo jerárquico y mec
 
 El sistema está diseñado con tres niveles principales:
 
-```plaintext
-/
-├── usuarios/
-│   ├── ana/
-│   │   ├── documentos/
-│   │   │   ├── proyecto1.md
-│   │   │   └── informe_final.pdf
-│   │   └── multimedia/
-│   │       ├── foto1.jpg
-│   │       ├── video1.mp4
-│   ├── carlos/
-│   │   ├── documentos/
-│   │   └── multimedia/
-├── sistema/
-│   ├── logs/
-│   │   ├── system.log
-│   │   ├── error.log
-│   ├── config/
-│       └── sistema.conf
-├── respaldos/
-    ├── usuarios_ana/
-    ├── sistema_logs/
-```
+![alt text](imagen-1.png)
 
 #### Descripción:
 1. **Raíz (/)**: Directorio principal que contiene subdirectorios importantes.
@@ -391,7 +369,7 @@ El directorio /usuarios/axel/documentos/ es dañado debido a un fallo del sistem
     ```
   - **Backup and Restore (Windows):** Proporciona copias programadas y restauración fácil.
 - **Frecuencia:** 
-  - Realizar respaldos diarios para directorios críticos como `/usuarios/`.
+  - Realizar respaldos diarios para directorios críticos como /usuarios/.
 
 #### 2. Sistemas de Versionado
 - Implementar sistemas como **Git** para archivos que requieren un historial de cambios, como documentos de texto o proyectos.
@@ -419,4 +397,5 @@ El directorio /usuarios/axel/documentos/ es dañado debido a un fallo del sistem
 | **Versionado**            | Control de cambios, útil para desarrollo         | No adecuado para grandes volúmenes de datos     |
 | **Snapshots**             | Recuperación rápida de estados previos           | Compatible solo con sistemas específicos        |
 | **Almacenamiento en la Nube** | Respaldo remoto, accesible desde cualquier lugar | Requiere conexión constante y suscripción       |
+
 
