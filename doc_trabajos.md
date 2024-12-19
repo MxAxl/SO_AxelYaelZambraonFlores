@@ -217,3 +217,17 @@ Indica el final del programa y devuelve 0 como código de salida exitoso.
 2. **Guardar en un archivo automáticamente**: Redirigir toda la salida a un archivo desde el script.
 3. **Filtrar información relevante**: Usar herramientas como grep para mostrar solo información específica y evitar datos innecesarios.
 
+## Actividad 6: Reflexión y discusión
+
+### **¿Qué comando encontraste más útil y por qué?**  
+Depende del caso, pero xrandr fue muy útil para ver las resoluciones de pantalla y configurarlas rápido. También aplay -l, porque ayuda a identificar problemas de sonido.
+
+### **¿Qué tan importante es conocer los dispositivos conectados?**  
+Es súper importante porque así sabes qué está conectado, si funciona bien, y puedes arreglar problemas de hardware rápido. Además, te ayuda a optimizar el sistema y detectar cosas raras (como un USB desconocido).
+
+### **¿Cómo aplicas esto en la administración de sistemas?**  
+Te sirve para:
+- Diagnosticar y resolver problemas de hardware.
+- Configurar equipos nuevos.
+- Automatizar revisiones de dispositivos.
+- Supervisar todo sin tener que estar físicamente frente al equipo.
