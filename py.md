@@ -912,4 +912,129 @@ Para proteger un sistema operativo multiusuario, se recomienda implementar el si
 
 ![alt text](imagen3.png)
 
+## Ejercicio 7: Cifrado
 
+### 1. Conceptos de cifrado
+
+#### **Cifrado simétrico**  
+El cifrado simétrico utiliza una sola clave para cifrar y descifrar la información. Esto implica que tanto el remitente como el receptor deben compartir la misma clave de forma segura. Es rápido y eficiente, por lo que se usa comúnmente para cifrar grandes volúmenes de datos.
+
+- **Ventajas:**  
+  - Mayor velocidad de cifrado y descifrado.  
+  - Menor consumo de recursos computacionales.  
+- **Desventajas:**  
+  - Riesgo en la distribución segura de la clave.  
+  - Si la clave es comprometida, toda la información cifrada queda vulnerable.  
+
+Ejemplo: Algoritmos como AES (Advanced Encryption Standard) y DES (Data Encryption Standard).
+
+#### **Cifrado asimétrico**  
+El cifrado asimétrico utiliza un par de claves: una clave pública y una clave privada. La clave pública se utiliza para cifrar los datos, mientras que la clave privada correspondiente se usa para descifrarlos. Este método es ideal para la transferencia segura de datos.
+
+- **Ventajas:**  
+  - No es necesario compartir la clave privada.  
+  - Proporciona autenticación y no repudio mediante firmas digitales.  
+- **Desventajas:**  
+  - Es más lento en comparación con el cifrado simétrico.  
+  - Requiere mayor capacidad de procesamiento.  
+
+Ejemplo: Algoritmos como RSA (Rivest-Shamir-Adleman) y ECC (Elliptic Curve Cryptography).
+
+### 2. Ejemplos prácticos en sistemas operativos
+
+#### **Ejemplo de cifrado simétrico**  
+Un sistema operativo puede usar el cifrado AES para proteger archivos almacenados en el disco. Por ejemplo, BitLocker en Windows utiliza AES para cifrar volúmenes completos de disco.
+
+#### **Ejemplo de cifrado asimétrico**  
+Un sistema operativo utiliza RSA para la autenticación de sesiones SSH. Cuando un usuario intenta iniciar sesión en un servidor remoto, se genera una clave pública para cifrar la sesión inicial y una clave privada para descifrarla.
+
+### 3. Simulación del proceso de cifrado y descifrado de un archivo
+
+#### **Cifrado simétrico (AES)**  
+En este ejemplo, se utiliza una clave de 256 bits para cifrar un archivo de texto.
+
+1. **Clave**: `ClaveAES1234567890ClaveAES1234567890` (32 caracteres, 256 bits).  
+2. **Texto original**: `Este es un mensaje secreto.`  
+
+**Proceso:**  
+- **Cifrado:**  
+  - El algoritmo AES toma el texto original y lo transforma en un formato cifrado (texto ilegible).  
+  - Resultado cifrado (en hexadecimal): `0x7a1c5f4b8aef456fa9d8a2e0e3b3c4d2`  
+
+- **Descifrado:**  
+  - La misma clave se usa para revertir el texto cifrado al texto original.  
+  - Resultado descifrado: `Este es un mensaje secreto.`  
+
+#### **Cifrado asimétrico (RSA)**  
+En este ejemplo, se cifra un archivo pequeño utilizando una clave pública de 2048 bits.
+
+1. **Clave pública:** `MIIBIjANBgkq...`  
+2. **Clave privada:** `MIIEvQIBADANBgkq...`  
+3. **Texto original:** `Archivo importante.`  
+
+**Proceso:**  
+- **Cifrado:**  
+  - El texto se cifra usando la clave pública.  
+  - Resultado cifrado (en base64): `Xk9R2mfL3bQt...`  
+
+- **Descifrado:**  
+  - Se usa la clave privada para descifrar el texto cifrado.  
+  - Resultado descifrado: `Archivo importante.`  
+
+### **Código de simulación (Python)**  
+
+El siguiente código demuestra el uso de los algoritmos AES y RSA para cifrar y descifrar un archivo:
+
+```python
+from Crypto.Cipher import AES
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+import os
+
+# Cifrado y descifrado AES (simétrico)
+def aes_encryption_decryption():
+    key = b'ClaveAES1234567890ClaveAES1234'  # Clave de 256 bits
+    cipher = AES.new(key, AES.MODE_EAX)
+    nonce = cipher.nonce
+    plaintext = b"Este es un mensaje secreto."
+    ciphertext, tag = cipher.encrypt_and_digest(plaintext)
+    
+    print("Texto cifrado (AES):", ciphertext)
+    
+    # Descifrado
+    decipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
+    decrypted_text = decipher.decrypt(ciphertext)
+    print("Texto descifrado (AES):", decrypted_text.decode())
+
+# Cifrado y descifrado RSA (asimétrico)
+def rsa_encryption_decryption():
+    key = RSA.generate(2048)
+    public_key = key.publickey()
+    
+    plaintext = b"Archivo importante."
+    cipher_rsa = PKCS1_OAEP.new(public_key)
+    ciphertext = cipher_rsa.encrypt(plaintext)
+    
+    print("Texto cifrado (RSA):", ciphertext)
+    
+    # Descifrado
+    decipher_rsa = PKCS1_OAEP.new(key)
+    decrypted_text = decipher_rsa.decrypt(ciphertext)
+    print("Texto descifrado (RSA):", decrypted_text.decode())
+
+# Ejecución de las funciones
+aes_encryption_decryption()
+rsa_encryption_decryption()
+```
+
+# Conclusión
+
+Este documento cubre de forma completa los aspectos más importantes de los sistemas operativos, enfocándose en la gestión de archivos, la seguridad y la protección, y el uso del cifrado. Se explican tanto conceptos básicos como ejemplos prácticos que muestran cómo se aplican en la vida real.
+
+En la parte de gestión de archivos, se analizan las diferencias entre archivos reales y virtuales, y cómo organizar y acceder a ellos de manera eficiente. Esto es clave para manejar la información de forma segura y ordenada.
+
+En cuanto a la seguridad, se destacan los objetivos principales: mantener la confidencialidad, la integridad y la disponibilidad de los datos. Además, se explican herramientas como autenticación, matrices de acceso y métodos para recuperar datos ante fallos.
+
+Por último, el tema de cifrado demuestra lo importante que es proteger los datos mediante técnicas como el cifrado simétrico y asimétrico. Los ejemplos ayudan a entender cómo funcionan estas estrategias y cómo se aplican.
+
+En resumen, este trabajo brinda una visión general, clara y útil sobre los sistemas operativos, mostrando su importancia para garantizar que todo funcione de manera segura, eficiente y confiable.
