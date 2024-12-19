@@ -180,4 +180,24 @@ Indica el final del programa y devuelve 0 como código de salida exitoso.
    - **Name**: El nombre del dispositivo.
    - **Phys**: La ubicación física del dispositivo en el sistema.
    - **Handlers**: Los manejadores asociados al dispositivo (por ejemplo, eventX, donde X es el número del dispositivo para evtest).
-   - **Bus**: El tipo de bus al que pertenece el dispositivo (por ejemplo, USB, PCI).  
+   - **Bus**: El tipo de bus al que pertenece el dispositivo (por ejemplo, USB, PCI).
+
+## Actividad 4: Examinar dispositivos de salida
+
+![alt text](image-2.png)
+
+1. **¿Qué salidas de video están disponibles en su sistema?**
+   Según la salida del comando xrandr, el sistema tiene conectada una pantalla denominada **Virtual-1** con una resolución actual de **1280x800**. También están disponibles otras resoluciones como **1024x768**, **800x600**, **640x480**, y más, con diferentes frecuencias de actualización.
+
+2. **¿Qué dispositivos de sonido se detectaron?**
+   Según la salida del comando aplay -l, se detectó un dispositivo de sonido con los siguientes detalles:
+
+   **Tarjeta de sonido:** Intel ICH [Intel 82801AA-ICH]
+
+   **Dispositivo:** Intel ICH
+
+   **Subdispositivo:** subdevice #0
+   
+
+3. **¿Qué procesos están usando la tarjeta de sonido?**
+   El comando lsof /dev/snd/* no detectó ningún proceso utilizando la tarjeta de sonido. La salida indica "No such file or directory", lo cual podría significar que el sistema no tiene configurado correctamente el acceso al dispositivo de sonido o que no hay procesos en uso en este momento.
