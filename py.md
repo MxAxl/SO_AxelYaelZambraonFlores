@@ -539,4 +539,97 @@ La seguridad de red garantiza la **confidencialidad** y **disponibilidad** de lo
 #### **Ejemplo Práctico**  
 En una empresa, el acceso a la red está protegido con un **firewall** y **VPN**. Los empleados utilizan credenciales únicas para acceder remotamente a los recursos, y se implementa un **IDPS** que bloquea intentos de intrusión sospechosos.
 
+## Ejercicio 3: Funciones del sistema de protección
 
+En un entorno multiusuario, donde múltiples individuos acceden y utilizan los recursos de un sistema simultáneamente, es esencial implementar un sistema de protección robusto. Este sistema garantiza que cada usuario interactúe únicamente con los recursos para los cuales tiene permiso, manteniendo la integridad, confidencialidad y disponibilidad de la información. A continuación, se detallan las funciones clave de un sistema de protección: **control de acceso**, **autenticación**, **autorización** y **auditoría**.
+
+### Control de Acceso a los Recursos
+
+#### Descripción
+
+El **control de acceso** es el mecanismo que determina quién puede interactuar con qué recursos dentro del sistema. En un entorno multiusuario, es fundamental para prevenir accesos no autorizados y asegurar que los usuarios solo realicen acciones permitidas.
+
+#### Implementación
+
+- **Listas de Control de Acceso (ACL)**: Definen permisos específicos para usuarios o grupos sobre archivos y directorios. Por ejemplo, en sistemas UNIX/Linux, las ACL permiten asignar permisos detallados más allá de los tradicionales permisos de propietario, grupo y otros. :contentReference[oaicite:0]{index=0}
+
+- **Modelos de Control de Acceso**:
+  - **Control de Acceso Discrecional (DAC)**: El propietario de un recurso decide quién puede acceder y con qué permisos. Este modelo es común en sistemas operativos como Windows y UNIX. :contentReference[oaicite:1]{index=1}
+  - **Control de Acceso Obligatorio (MAC)**: Las políticas de acceso son establecidas por una autoridad central, y los usuarios no pueden cambiarlas.
+  - **Control de Acceso Basado en Roles (RBAC)**: Los permisos se asignan según roles específicos dentro de la organización, facilitando la gestión en entornos con muchos usuarios.
+
+#### Importancia
+
+Un control de acceso efectivo previene que usuarios no autorizados accedan a información sensible, reduciendo riesgos de violaciones de seguridad y garantizando que cada usuario tenga acceso únicamente a los recursos necesarios para sus funciones.
+
+### Autenticación
+
+#### Descripción
+
+La **autenticación** es el proceso de verificar la identidad de un usuario que intenta acceder al sistema. Asegura que quien solicita acceso es realmente quien dice ser.
+
+#### Métodos Comunes
+
+- **Contraseñas**: La forma más tradicional, donde el usuario proporciona una clave secreta.
+- **Autenticación Multifactor (MFA)**: Combina múltiples métodos, como algo que el usuario sabe (contraseña), algo que tiene (token) y algo que es (biometría), para una verificación más robusta. :contentReference[oaicite:2]{index=2}
+- **Biometría**: Utiliza características físicas del usuario, como huellas dactilares o reconocimiento facial.
+
+#### Importancia
+
+La autenticación garantiza que solo usuarios legítimos accedan al sistema, siendo la primera línea de defensa contra accesos no autorizados.
+
+### Autorización
+
+#### Descripción
+
+La **autorización** determina los niveles de acceso y las acciones que un usuario autenticado puede realizar dentro del sistema. Mientras que la autenticación verifica la identidad, la autorización define los permisos asociados a esa identidad.
+
+#### Implementación
+
+- **Políticas de Seguridad**: Definen qué recursos son accesibles para diferentes usuarios o roles.
+- **Roles y Permisos**: Asignación de permisos específicos según el rol del usuario en la organización, facilitando la gestión de acceso.
+
+#### Importancia
+
+La autorización asegura que los usuarios solo puedan acceder y manipular los recursos para los cuales tienen permiso, protegiendo la integridad y confidencialidad de la información.
+
+### Auditoría
+
+#### Descripción
+
+La **auditoría** implica el registro y análisis de las actividades realizadas por los usuarios dentro del sistema. Permite monitorear el uso de los recursos y detectar comportamientos inusuales o no autorizados.
+
+#### Implementación
+
+- **Registros de Eventos (Logs)**: Almacenan información sobre accesos, modificaciones y otras actividades relevantes.
+- **Sistemas de Detección de Intrusos (IDS)**: Monitorean el sistema en tiempo real para identificar actividades sospechosas.
+
+#### Importancia
+
+La auditoría facilita la detección de violaciones de seguridad, permite la trazabilidad de acciones y es esencial para cumplir con normativas y regulaciones.
+
+### Caso Práctico: Implementación de un Sistema de Protección en una Empresa
+
+#### Escenario
+
+Una empresa mediana utiliza un servidor centralizado donde los empleados almacenan y comparten documentos. El sistema operativo del servidor es Linux, y se requiere implementar un sistema de protección que garantice:
+
+- Solo empleados autenticados puedan acceder al servidor.
+- Los empleados solo puedan acceder a los archivos relacionados con su departamento.
+- Se mantenga un registro de todas las actividades para futuras auditorías.
+
+#### Implementación
+
+1. **Autenticación**:
+   - Se configura un sistema de autenticación basado en contraseñas robustas, obligando a los empleados a cambiar sus contraseñas cada 90 días.
+   - Se implementa la autenticación multifactor (MFA) utilizando tokens físicos para acceso remoto.
+
+2. **Autorización**:
+   - Se crean grupos de usuarios para cada departamento: ventas, marketing, finanzas, etc.
+   - Se asignan permisos a los directorios correspondientes, asegurando que solo los miembros del grupo adecuado puedan acceder a la información pertinente. Por ejemplo, el directorio /datos/finanzas es accesible únicamente por el grupo finanzas.
+
+3. **Control de Acceso**:
+   - Se utilizan Listas de Control de Acceso (ACL) para definir permisos específicos en archivos y directorios, permitiendo excepciones cuando sea necesario. Por ejemplo, si un miembro de marketing necesita acceder a un archivo en ventas, se ajusta la ACL correspondiente para otorgar acceso de solo lectura
+::contentReference[oaicite:3]{index=3}
+ 
+ 
