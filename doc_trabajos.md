@@ -144,8 +144,6 @@ Indica el final del programa y devuelve 0 como código de salida exitoso.
 
 ![alt text](image.png)
 
-### Respuestas:
-
 1. **¿Qué tipos de dispositivos se muestran en la salida de lsblk?**  
    En la salida de lsblk, se muestran dispositivos de bloque, como discos duros (sda), particiones (sda1, sda2) y dispositivos de bucle (loop) que generalmente son utilizados para montar imágenes de sistema o aplicaciones empaquetadas (como Snap). También se incluye un dispositivo de CD-ROM virtual (sr0).
 
@@ -156,3 +154,17 @@ Indica el final del programa y devuelve 0 como código de salida exitoso.
 
 3. **¿Qué información adicional proporciona dmesg | grep usb?**  
    Este comando muestra los mensajes del kernel relacionados específicamente con dispositivos USB. Proporciona información detallada sobre la detección y configuración de dispositivos USB, incluyendo logs de conexión/desconexión, inicialización de controladores y posibles errores. Es útil para diagnosticar problemas o verificar que un dispositivo USB fue reconocido correctamente por el sistema.
+
+## Actividad 2: Verificar dispositivos de almacenamiento
+
+![alt text](image-1.png)
+
+1. **¿Qué dispositivos de almacenamiento están conectados a su sistema?**  
+   Según la salida del comando fdisk -l, el sistema tiene un dispositivo principal conectado, identificado como /dev/sda. Este dispositivo incluye varias particiones. Sin embargo, no se pudo acceder directamente a la información detallada debido a la falta de permisos.
+
+2. **¿Qué particiones están montadas actualmente?**  
+   Según el comando df -h, la partición montada actualmente es /dev/sda2, que está montada en el directorio raíz (/). Adicionalmente, hay sistemas de archivos temporales (tmpfs) montados para tareas específicas como /run, /dev/shm, y /run/lock.
+
+3. **¿Qué tipo de sistemas de archivos se usan en las particiones?**  
+   El comando blkid muestra que la partición /dev/sda2 utiliza el sistema de archivos ext4. Este es un sistema de archivos comúnmente usado en sistemas Linux por su confiabilidad y rendimiento.
+   
