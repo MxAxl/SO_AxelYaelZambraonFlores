@@ -743,4 +743,115 @@ Cuando un empleado intenta acceder a un recurso:
 - Si es permitido, el sistema concede el acceso.
 - Si no, el sistema bloquea la acción y alerta al administrador sobre el intento.
 
+## Ejercicio 5: Protección basada en el lenguaje
+
+La **protección basada en el lenguaje** es un enfoque para garantizar la seguridad y la correcta gestión de los recursos de un sistema mediante las características integradas del lenguaje de programación. Este modelo asegura que las políticas de protección, como la gestión de memoria, el control de accesos y la prevención de errores, sean aplicadas de manera estricta desde la fase de desarrollo hasta la ejecución del software. Es un método clave para reducir vulnerabilidades y mejorar la seguridad de las aplicaciones.
+
+### Concepto de Protección Basada en el Lenguaje
+
+Este enfoque se basa en las capacidades intrínsecas del lenguaje para:
+1. **Gestionar la memoria** de manera segura y eficiente.
+2. **Evitar accesos no autorizados** a datos y recursos.
+3. **Detectar y prevenir errores** en tiempo de compilación o ejecución.
+4. Garantizar la integridad del sistema mediante **reglas estrictas de programación**.
+
+A diferencia de los mecanismos de protección a nivel de sistema operativo, que operan desde el hardware o software del sistema, la protección basada en el lenguaje actúa desde el propio código fuente, asegurando que los desarrolladores sigan buenas prácticas y que el software esté protegido antes incluso de su despliegue.
+
+### Ejemplos de Lenguajes que Implementan Protección
+
+#### Java
+
+**Características de Protección:**
+1. **Gestión Automática de Memoria**:  
+   - Java utiliza un **Garbage Collector** que se encarga de liberar automáticamente la memoria asignada a objetos que ya no son referenciados. Esto evita errores como fugas de memoria y accesos a memoria ya liberada.
+   - Previene errores comunes como el "segmentation fault", al no permitir que el programa interactúe directamente con la memoria.
+
+2. **Seguridad en la JVM (Java Virtual Machine)**:  
+   - Todo el código Java se ejecuta dentro de la JVM, que aísla al programa del hardware y sistema operativo subyacentes.
+   - Realiza verificaciones en tiempo de ejecución para asegurar que no haya violaciones de acceso ni desbordamientos de pila.
+
+3. **Control de Acceso a Recursos**:  
+   - La sintaxis de Java incluye modificadores de acceso como `public`, `private`, `protected`, que controlan qué partes del código pueden interactuar con clases y métodos.
+
+4. **Modelo de Seguridad de Applets**:  
+   - En sus inicios, Java fue pionero en la ejecución segura de código descargado a través de Internet mediante su modelo de "sandbox", limitando las acciones que podía realizar el código no confiable.
+
+**Ejemplo Práctico:**  
+```java
+public class Proteccion {
+    private String datosSensibles;
+
+    public Proteccion(String datos) {
+        this.datosSensibles = datos;
+    }
+
+    public String obtenerDatos() {
+        return this.datosSensibles;
+    }
+}
+```
+Aquí, el acceso directo al campo datosSensibles está restringido gracias al modificador private.
+
+#### Rust
+
+**Características de Protección:**
+1. **Sistema de Propiedad y Préstamos**:  
+   - Rust introduce un sistema de propiedad que asegura que cada recurso tiene un único propietario. Esto elimina problemas como condiciones de carrera o accesos simultáneos no controlados.
+   - Los **préstamos** permiten compartir referencias de memoria temporalmente, pero con reglas estrictas que aseguran la coherencia y evitan desbordamientos.
+
+2. **Seguridad en Tiempo de Compilación**:  
+   - La mayoría de los errores relacionados con la memoria, como accesos a punteros nulos o fugas de memoria, son detectados en tiempo de compilación.
+   - Esto reduce significativamente los riesgos de fallos en producción.
+
+3. **Ejecución Sin Recolector de Basura**:  
+   - Rust no utiliza un garbage collector, lo que mejora el rendimiento al tiempo que asegura la seguridad mediante análisis estáticos del código.
+
+**Ejemplo Práctico:**  
+```rust
+fn main() {
+    let datos = String::from("Información segura");
+    imprimir_datos(&datos);
+}
+
+fn imprimir_datos(d: &String) {
+    println!("{}", d);
+}
+```
+En este caso, Rust asegura que no se modifique ni se libere la memoria mientras está siendo prestada a otra función.
+
+### Comparación con Otros Mecanismos de Protección
+
+#### A Nivel de Sistema Operativo
+Los sistemas operativos tradicionales implementan mecanismos como:
+1. **Modos de Operación (Usuario y Kernel)**:  
+   - Restringen qué instrucciones y recursos pueden utilizar los programas en función de su nivel de privilegio.
+2. **Listas de Control de Acceso (ACLs)**:  
+   - Especifican permisos detallados para usuarios y procesos.
+3. **Gestión de Memoria Virtual**:  
+   - Aísla los procesos en su propio espacio de memoria, evitando que interfieran entre sí.
+
+#### Diferencias Clave
+
+| Aspecto                      | Protección Basada en el Lenguaje | Protección del Sistema Operativo |
+|------------------------------|-----------------------------------|-----------------------------------|
+| **Nivel de Aplicación**      | Código fuente y lógica de programa. | Hardware y software del sistema. |
+| **Detección de Errores**     | En tiempo de compilación.         | En tiempo de ejecución.          |
+| **Escalabilidad**            | Depende del diseño del lenguaje.  | Más general, pero menos flexible.|
+| **Aislamiento**              | A través del lenguaje y sus reglas. | A través de procesos y memoria.  |
+
+### Ventajas de la Protección Basada en el Lenguaje
+
+1. **Prevención Proactiva**:  
+   - Detecta problemas antes de la ejecución.
+2. **Mayor Control de Seguridad**:  
+   - Los desarrolladores pueden definir reglas y restricciones específicas en el código.
+3. **Mejora de la Productividad**:  
+   - Reduce el tiempo necesario para depurar errores relacionados con la memoria.
+
+### Desafíos
+1. **Curva de Aprendizaje**:  
+   - Algunos lenguajes, como Rust, tienen una sintaxis compleja para principiantes.
+2. **Compatibilidad**:  
+   - Puede ser difícil integrar protección basada en el lenguaje en proyectos que usen lenguajes más permisivos como C.
+
 
