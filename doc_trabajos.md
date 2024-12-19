@@ -139,3 +139,20 @@ return 0;
 ```
 Indica el final del programa y devuelve 0 como código de salida exitoso.
 
+# Actividades: Dispositivos de entrada y salida en Linux
+## Actividad 1: Listar dispositivos conectados
+
+![alt text](image.png)
+
+### Respuestas:
+
+1. **¿Qué tipos de dispositivos se muestran en la salida de lsblk?**  
+   En la salida de lsblk, se muestran dispositivos de bloque, como discos duros (sda), particiones (sda1, sda2) y dispositivos de bucle (loop) que generalmente son utilizados para montar imágenes de sistema o aplicaciones empaquetadas (como Snap). También se incluye un dispositivo de CD-ROM virtual (sr0).
+
+2. **¿Cuál es la diferencia entre lsusb y lspci?**  
+   - lsusb: Lista los dispositivos conectados a los puertos USB, como hubs, controladores de USB y dispositivos externos como memorias USB, tablets o webcams.
+   - lspci: Enumera los dispositivos conectados al bus PCI, incluyendo hardware interno como controladores gráficos, tarjetas de red, controladores SATA y audio, entre otros.  
+   La diferencia principal radica en que lsusb se centra únicamente en dispositivos USB, mientras que lspci muestra todos los dispositivos internos conectados al bus PCI del sistema.
+
+3. **¿Qué información adicional proporciona dmesg | grep usb?**  
+   Este comando muestra los mensajes del kernel relacionados específicamente con dispositivos USB. Proporciona información detallada sobre la detección y configuración de dispositivos USB, incluyendo logs de conexión/desconexión, inicialización de controladores y posibles errores. Es útil para diagnosticar problemas o verificar que un dispositivo USB fue reconocido correctamente por el sistema.
