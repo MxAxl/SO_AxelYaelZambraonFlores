@@ -206,3 +206,108 @@ Bloque 4  | Metadata de proyecto.md (Inode #25)
 Bloque 5  | Contenido de proyecto.md (Primera parte)
 Bloque 10 | Contenido de proyecto.md (Segunda parte)
 ```
+
+## Ejercicio 4: Mecanismos de Acceso a los Archivos
+
+### Definición de los Mecanismos de Acceso
+
+1. **Acceso Secuencial:**
+   - Los datos se leen o escriben de forma ordenada, uno tras otro, desde el inicio del archivo hasta el final.
+   - Es ideal para procesar grandes volúmenes de datos lineales, como registros en un log.
+   - **Ejemplo:** Leer todas las líneas de un archivo de texto en orden.
+
+2. **Acceso Directo (o Aleatorio):**
+   - Permite acceder directamente a una posición específica en el archivo sin necesidad de leer desde el principio.
+   - Se utiliza cuando se conoce la posición exacta de los datos dentro del archivo.
+   - **Ejemplo:** Buscar un registro específico en un archivo binario.
+
+3. **Acceso Indexado:**
+   - Utiliza una estructura adicional (índice) para localizar rápidamente las posiciones de los datos en el archivo.
+   - Es útil en sistemas donde se realizan búsquedas frecuentes de datos específicos.
+   - **Ejemplo:** Una base de datos con índices para acceder a registros por clave primaria.
+
+### Pseudocódigos para los Mecanismos de Acceso
+
+#### 1. Acceso Secuencial
+```plaintext
+# Pseudocódigo para leer un archivo secuencialmente
+Abrir archivo en modo lectura
+Mientras no se alcance el final del archivo:
+    Leer línea actual
+    Procesar línea
+Cerrar archivo
+```
+
+**Ejemplo Práctico:**
+```python
+# Python - Leer un archivo secuencialmente
+with open("datos.txt", "r") as archivo:
+    for linea in archivo:
+        print(linea.strip())
+```
+
+#### 2. Acceso Directo
+```plaintext
+# Pseudocódigo para acceso directo por posición
+Abrir archivo en modo lectura
+Ir a la posición deseada en el archivo
+Leer datos desde esa posición
+Procesar los datos
+Cerrar archivo
+```
+
+**Ejemplo Práctico:**
+```python
+with open("datos.bin", "rb") as archivo:
+    archivo.seek(20)  # Ir a la posición 20 (offset)
+    datos = archivo.read(10)  # Leer 10 bytes desde esa posición
+    print(datos)
+```
+
+#### 3. Acceso Indexado
+```plaintext
+# Pseudocódigo para acceso indexado
+Cargar índice en memoria
+Buscar en el índice la posición asociada al dato deseado
+Abrir archivo en modo lectura
+Ir a la posición indicada por el índice
+Leer y procesar los datos
+Cerrar archivo
+```
+
+**Ejemplo Práctico:**
+```python
+# Simular acceso indexado
+indice = {"registro1": 0, "registro2": 50, "registro3": 100}  # Índice en memoria
+registro_buscado = "registro2"
+
+with open("datos.bin", "rb") as archivo:
+    posicion = indice[registro_buscado]
+    archivo.seek(posicion)  # Ir a la posición indicada
+    datos = archivo.read(10)  # Leer 10 bytes
+    print(datos)
+```
+
+### Comparación de los Mecanismos de Acceso
+
+| **Aspecto**          | **Acceso Secuencial**                     | **Acceso Directo**                       | **Acceso Indexado**                     |
+|----------------------|------------------------------------------|-----------------------------------------|-----------------------------------------|
+| **Velocidad**        | Lento para registros específicos         | Rápido si se conoce la posición         | Muy rápido con un índice bien diseñado  |
+| **Facilidad de Uso** | Simple de implementar                   | Requiere conocimiento del offset        | Más complejo por la gestión del índice  |
+| **Espacio Adicional**| No requiere espacio extra               | No requiere espacio extra               | Requiere almacenamiento para el índice  |
+| **Caso de Uso**      | Procesamiento completo de datos (logs)  | Lectura de datos específicos (binarios) | Bases de datos o búsquedas frecuentes   |
+
+### Ejemplos de Casos de Uso
+
+1. **Acceso Secuencial:**
+   - Procesar registros en un archivo de log para análisis de eventos.
+   - Leer un archivo CSV línea por línea.
+
+2. **Acceso Directo:**
+   - Recuperar un registro específico en un archivo binario grande.
+   - Editar un archivo de configuración en una posición específica.
+
+3. **Acceso Indexado:**
+   - Consultar datos en una base de datos relacional.
+   - Buscar una palabra en un índice invertido en motores de búsqueda.
+
