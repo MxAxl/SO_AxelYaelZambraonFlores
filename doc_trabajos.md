@@ -197,7 +197,23 @@ Indica el final del programa y devuelve 0 como código de salida exitoso.
    **Dispositivo:** Intel ICH
 
    **Subdispositivo:** subdevice #0
-   
+
 
 3. **¿Qué procesos están usando la tarjeta de sonido?**
    El comando lsof /dev/snd/* no detectó ningún proceso utilizando la tarjeta de sonido. La salida indica "No such file or directory", lo cual podría significar que el sistema no tiene configurado correctamente el acceso al dispositivo de sonido o que no hay procesos en uso en este momento.
+
+## Actividad 5: Crear un script de resumen
+
+### **Ventajas de usar un script para recopilar esta información:**
+1. **Automatización**: Evita ejecutar manualmente múltiples comandos cada vez que se necesita la información.
+2. **Consistencia**: Garantiza que los comandos siempre se ejecuten de la misma manera, reduciendo errores humanos.
+3. **Portabilidad**: Se puede reutilizar en otros sistemas Linux similares para recopilar información rápidamente.
+4. **Eficiencia**: Permite ejecutar varias tareas en un solo paso, ahorrando tiempo.
+5. **Almacenamiento centralizado**: Guardar la salida en un archivo facilita su análisis y referencia futura.
+
+
+### **Cambios para personalizar el script:**
+1. **Agregar fecha y hora**: Incluir un registro de tiempo en la salida para saber cuándo se recopiló la información.
+2. **Guardar en un archivo automáticamente**: Redirigir toda la salida a un archivo desde el script.
+3. **Filtrar información relevante**: Usar herramientas como grep para mostrar solo información específica y evitar datos innecesarios.
+
