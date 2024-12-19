@@ -854,4 +854,62 @@ Los sistemas operativos tradicionales implementan mecanismos como:
 2. **Compatibilidad**:  
    - Puede ser difícil integrar protección basada en el lenguaje en proyectos que usen lenguajes más permisivos como C.
 
+## Ejercicio 6: Validación y amenazas al sistema
+
+Los sistemas operativos son fundamentales para la gestión de recursos en una computadora, pero también son vulnerables a diversas amenazas que pueden comprometer su integridad y funcionamiento. A continuación, se describen tres amenazas comunes y los mecanismos de validación utilizados para prevenirlas.
+
+### 1. Malware
+
+El **malware** incluye virus, gusanos, troyanos y ransomware diseñados para infiltrarse y dañar sistemas operativos. Estos programas maliciosos pueden robar información sensible, dañar archivos o permitir el acceso no autorizado al sistema.
+
+#### Mecanismos de Validación:
+- **Antivirus y Antimalware:** Herramientas que detectan y eliminan software malicioso.
+- **Actualizaciones de Seguridad:** Mantener el sistema operativo y las aplicaciones actualizadas para corregir vulnerabilidades conocidas.
+- **Control de Acceso:** Implementar políticas que restrinjan la ejecución de software no autorizado.
+
+### 2. Ataques de Fuerza Bruta
+
+Los **ataques de fuerza bruta** intentan adivinar contraseñas o claves cifradas probando múltiples combinaciones hasta encontrar la correcta. Son efectivos contra contraseñas débiles o mal gestionadas.
+
+#### Mecanismos de Validación:
+- **Autenticación Multifactor (MFA):** Requiere múltiples formas de verificación, como algo que el usuario sabe (contraseña), algo que tiene (token) o algo que es (biometría).
+- **Bloqueo de Cuenta:** Después de varios intentos fallidos, la cuenta se bloquea temporalmente para prevenir ataques.
+- **Políticas de Contraseñas Fuertes:** Exigir contraseñas complejas y su cambio periódico.
+
+### 3. Inyección de Código
+
+La **inyección de código** consiste en insertar código malicioso en aplicaciones o sistemas operativos a través de entradas no validadas, permitiendo al atacante ejecutar comandos no autorizados.
+
+#### Mecanismos de Validación:
+- **Validación de Entradas:** Comprobar y sanitizar todas las entradas de usuario para prevenir la ejecución de código no deseado.
+- **Principio de Mínimos Privilegios:** Limitar los permisos de las aplicaciones y usuarios para reducir el impacto de una posible inyección.
+- **Uso de Lenguajes Seguros:** Emplear lenguajes de programación que gestionen automáticamente la memoria y prevengan vulnerabilidades comunes.
+
+### Esquema de Validación para un Sistema Operativo con Múltiples Usuarios
+
+Para proteger un sistema operativo multiusuario, se recomienda implementar el siguiente esquema de validación:
+
+#### 1. Autenticación:
+- **Contraseñas Fuertes:** Exigir contraseñas complejas y su cambio periódico.
+- **Autenticación Multifactor:** Implementar métodos adicionales como tokens o biometría.
+
+#### 2. Control de Acceso:
+- **Listas de Control de Acceso (ACLs):** Definir permisos específicos para usuarios y grupos.
+- **Principio de Mínimos Privilegios:** Asignar solo los permisos necesarios para cada usuario.
+
+#### 3. Monitoreo y Auditoría:
+- **Registros de Actividad:** Registrar todas las acciones de los usuarios para detectar comportamientos sospechosos.
+- **Análisis de Logs:** Revisar periódicamente los registros para identificar posibles incidentes de seguridad.
+
+#### 4. Protección contra Malware:
+- **Antivirus y Antimalware:** Instalar y mantener actualizadas herramientas de detección y eliminación de malware.
+- **Actualizaciones de Seguridad:** Aplicar parches y actualizaciones regularmente para corregir vulnerabilidades.
+
+#### 5. Educación y Concientización:
+- **Capacitación de Usuarios:** Informar a los usuarios sobre prácticas seguras y riesgos comunes.
+- **Simulacros de Phishing:** Realizar ejercicios para detectar y prevenir ataques de ingeniería social.
+
+
+![alt text](imagen3.png)
+
 
