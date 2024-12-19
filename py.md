@@ -1,4 +1,4 @@
-# Proyecto final
+# Sistema de Archivos
 ## Ejercicio 1: Concepto y Noción de Archivo Real y Virtual
 
 ### Concepto de Archivo Real
@@ -310,4 +310,113 @@ with open("datos.bin", "rb") as archivo:
 3. **Acceso Indexado:**
    - Consultar datos en una base de datos relacional.
    - Buscar una palabra en un índice invertido en motores de búsqueda.
+
+Aquí tienes el desarrollo detallado del **Ejercicio 5: Modelo jerárquico y mecanismos de recuperación en caso de falla**.
+
+## Ejercicio 5: Modelo Jerárquico y Mecanismos de Recuperación en Caso de Falla
+
+### Modelo Jerárquico para un Sistema de Archivos
+
+El sistema está diseñado con tres niveles principales:
+
+```plaintext
+/
+├── usuarios/
+│   ├── ana/
+│   │   ├── documentos/
+│   │   │   ├── proyecto1.md
+│   │   │   └── informe_final.pdf
+│   │   └── multimedia/
+│   │       ├── foto1.jpg
+│   │       ├── video1.mp4
+│   ├── carlos/
+│   │   ├── documentos/
+│   │   └── multimedia/
+├── sistema/
+│   ├── logs/
+│   │   ├── system.log
+│   │   ├── error.log
+│   ├── config/
+│       └── sistema.conf
+├── respaldos/
+    ├── usuarios_ana/
+    ├── sistema_logs/
+```
+
+#### Descripción:
+1. **Raíz (/)**: Directorio principal que contiene subdirectorios importantes.
+2. **Usuarios (/usuarios/)**: Contiene datos personales organizados por usuario.
+3. **Sistema (/sistema/)**: Contiene logs y configuraciones del sistema operativo.
+4. **Respaldos (/respaldos/)**: Almacena copias de seguridad de directorios críticos.
+
+### Simulación de una Falla
+
+#### Escenario:
+El directorio /usuarios/axel/documentos/ es dañado debido a un fallo del sistema de archivos. Los archivos almacenados dentro (e.g., proyecto1.md e informe_final.pdf) ya no están accesibles.
+
+#### Pasos para la Recuperación
+
+1. **Verificación Inicial:**
+   - Usar una herramienta como fsck (en Linux) o chkdsk (en Windows) para verificar y reparar errores en el sistema de archivos:
+     ```bash
+     fsck /dev/sdX
+     ```
+     Esto busca corregir errores menores como referencias corruptas.
+
+2. **Recuperación de Directorios Perdidos:**
+   - Si el sistema de archivos tiene un espacio reservado para archivos huérfanos, buscar allí:
+     ```bash
+     ls -l /lost+found/
+     ```
+   - Mover los archivos recuperados a su ubicación original.
+
+3. **Uso de Copias de Seguridad:**
+   - Restaurar el directorio desde la última copia de seguridad almacenada en /respaldos/usuarios_axel/:
+     ```bash
+     cp -r /respaldos/usuarios_axel/documentos/ /usuarios/axel/
+     ```
+
+4. **Recuperación con Herramientas Especializadas:**
+   - Si los pasos anteriores fallan, emplear herramientas de recuperación de datos como:
+     - **TestDisk**: Para reconstruir estructuras de partición.
+     - **Photorec**: Para recuperar archivos específicos.
+
+### Técnicas y Herramientas de Respaldo
+
+#### 1. Copias de Seguridad Programadas
+- **Herramientas:** 
+  - **rsync (Linux):** Sincroniza directorios y realiza copias incrementales.
+    ```bash
+    rsync -av --delete /usuarios/ /respaldos/usuarios/
+    ```
+  - **Backup and Restore (Windows):** Proporciona copias programadas y restauración fácil.
+- **Frecuencia:** 
+  - Realizar respaldos diarios para directorios críticos como `/usuarios/`.
+
+#### 2. Sistemas de Versionado
+- Implementar sistemas como **Git** para archivos que requieren un historial de cambios, como documentos de texto o proyectos.
+  ```bash
+  git init
+  git add proyecto1.md
+  git commit -m "Primer respaldo"
+  ```
+
+#### 3. Snapshots
+- Utilizar sistemas de archivos como ZFS o Btrfs que permiten tomar snapshots del sistema:
+  ```bash
+  zfs snapshot pool1@snapshot1
+  ```
+
+#### 4. Almacenamiento en la Nube
+- **Servicios:** Google Drive, OneDrive, o soluciones empresariales como AWS S3.
+- **Ventaja:** Ofrecen respaldo en ubicaciones geográficamente distintas, minimizando riesgos por desastres físicos.
+
+### Comparación de Técnicas de Respaldo
+
+| **Método**                | **Ventajas**                                      | **Desventajas**                                  |
+|---------------------------|--------------------------------------------------|-------------------------------------------------|
+| **Copias de Seguridad**   | Simples, automatizables, y económicas            | Requieren espacio físico para almacenamiento    |
+| **Versionado**            | Control de cambios, útil para desarrollo         | No adecuado para grandes volúmenes de datos     |
+| **Snapshots**             | Recuperación rápida de estados previos           | Compatible solo con sistemas específicos        |
+| **Almacenamiento en la Nube** | Respaldo remoto, accesible desde cualquier lugar | Requiere conexión constante y suscripción       |
 
