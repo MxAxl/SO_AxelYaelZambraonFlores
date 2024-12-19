@@ -1038,3 +1038,20 @@ En cuanto a la seguridad, se destacan los objetivos principales: mantener la con
 Por último, el tema de cifrado demuestra lo importante que es proteger los datos mediante técnicas como el cifrado simétrico y asimétrico. Los ejemplos ayudan a entender cómo funcionan estas estrategias y cómo se aplican.
 
 En resumen, este trabajo brinda una visión general, clara y útil sobre los sistemas operativos, mostrando su importancia para garantizar que todo funcione de manera segura, eficiente y confiable.
+
+# Fuentes bibliograficas
+
+   - So-Sistemas-Operativos. (2017). *Noción de archivo real y virtual*. Recuperado de https://so-sistemas-operativoss.blogspot.com/2017/12/52-nocion-de-archivo-real-y-virtual.html
+   - García, C. (n.d.). *Archivo real y virtual*. Recuperado de https://prezi.com/p/o7skb2j4sdls/archivo-real-y-virtual
+   - EaseUS. (n.d.). *Comparación de sistema de archivos NTFS, FAT32, exFAT o EXT*. Recuperado de https://es.easeus.com/gestionar-disco/sistema-de-archivos.html
+   - Piensa en Binario. (2011, octubre). *Radiografía de los sistemas de archivos NTFS y EXT4*. Recuperado de https://www.piensaenbinario.com/2011/10/radiografia-de-los-sistemas-de-archivos.html
+   - Ionos. (n.d.). *Sistemas de archivos: qué son y cuáles son los más importantes*. Recuperado de https://www.ionos.com/es-us/digitalguide/servidores/know-how/sistemas-de-archivos
+   - Xataka. (n.d.). *Qué sistemas de archivo son compatibles con cada sistema operativo*. Recuperado de https://www.xataka.com/basics/que-sistemas-archivo-compatibles-cada-
+   - IBM. (n.d.). *Sistemas de archivos virtuales*. Recuperado de https://www.ibm.com/docs/es/aix/7.3?topic=concepts-virtual-file-systems
+   - Iscsounidad5. (2018, diciembre). *Unidad 5 – Sistemas de archivos*. Recuperado de https://iscsounidad5.wordpress.com/2018/12/09/primera-entrada-del-blog/
+   - Belkin, S. (n.d.). *Tabla comparativa Microsoft Windows, OS X y Linux*. Recuperado de https://sergiobelkin.com/posts/tabla-comparativa-microsoft-windows-os-x-y-linux/
+   - Oracle. (n.d.). Java technologies. Retrieved from https://www.oracle.com/java/technologies/
+   - The Rust Programming Language. (n.d.). The Rust documentation. Retrieved from https://doc.rust-lang.org/
+   - TechTarget. (n.d.). Comparative security: Java vs Rust. Retrieved from https://www.techtarget.com/comparativa-java-rust
+   - Medium. (n.d.). Protección basada en el lenguaje: Conceptos y estrategias. Retrieved from https://medium.com/proteccion-basada-en-lenguaje
+   - Sistemas Operativos ITIT. (n.d.). Protección basada en el lenguaje en sistemas operativos. Retrieved from https://sistemasoperativositit.weebly.com/
