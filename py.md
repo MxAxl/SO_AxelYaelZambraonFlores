@@ -319,7 +319,7 @@ Aquí tienes el desarrollo detallado del **Ejercicio 5: Modelo jerárquico y mec
 
 El sistema está diseñado con tres niveles principales:
 
-![alt text](imagen-1.png)
+![alt text](imagen.png)
 
 #### Descripción:
 1. **Raíz (/)**: Directorio principal que contiene subdirectorios importantes.
