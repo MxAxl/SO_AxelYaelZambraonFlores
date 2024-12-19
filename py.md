@@ -437,4 +437,106 @@ Imaginemos un sistema operativo en una empresa que maneja información financier
 
 5. **No Repudio**: Cada operación financiera requiere una firma digital que registra de manera inequívoca al empleado que realizó la transacción.
 
+## Ejercicio 2: Clasificación aplicada a la seguridad
+
+La seguridad en sistemas operativos es un aspecto fundamental para garantizar el correcto funcionamiento de los recursos, proteger la información y prevenir accesos no autorizados o ataques maliciosos. Para abordar estos desafíos, los mecanismos de seguridad se clasifican comúnmente en **seguridad física**, **seguridad lógica** y **seguridad de red**. A continuación, exploraremos cada una de estas clasificaciones, explicando su rol, importancia y ejemplos de herramientas y técnicas utilizadas.
+
+### 1. Seguridad Física  
+
+#### **Descripción**
+La **seguridad física** se centra en proteger el **hardware** y otros componentes físicos del sistema informático frente a daños accidentales, accesos no autorizados, robos o desastres naturales. Aunque puede parecer menos relevante que otros niveles de seguridad, la protección física es crucial porque sin un hardware funcional, el software y los datos no pueden operar.
+
+#### **Rol en la Protección del Sistema Operativo**
+La seguridad física contribuye a proteger la **disponibilidad** del sistema. Un sistema operativo no puede funcionar si el hardware o infraestructura donde reside se ve comprometido. Si un atacante obtiene acceso físico a los dispositivos, podría:
+- Robar discos duros o servidores.
+- Instalar hardware malicioso, como dispositivos **keyloggers**.
+- Manipular los sistemas para obtener acceso a datos o ejecutar ataques.  
+
+#### **Técnicas y Ejemplos Prácticos**
+1. **Controles de Acceso Físico**:  
+   - **Tarjetas de acceso electrónico**: Permiten restringir la entrada a salas de servidores o áreas de datos a personal autorizado.  
+   - **Biometría**: Utilización de huellas digitales, reconocimiento facial o escaneo de retina.  
+   - **Guardias de Seguridad**: Personal entrenado que vigila áreas sensibles.  
+
+2. **Monitoreo y Vigilancia**:  
+   - **Cámaras de seguridad (CCTV)**: Se colocan en puntos críticos para monitorear y registrar actividades.  
+   - **Alarmas y sensores de movimiento**: Detectan accesos no autorizados.  
+
+3. **Protección contra Desastres Naturales**:  
+   - **Sistemas contra incendios**: Detectores de humo y rociadores automáticos.  
+   - **Centros de datos redundantes**: Provisión de copias de seguridad físicas en ubicaciones separadas.  
+   - **Baterías de respaldo (UPS)** y **generadores**: Aseguran la disponibilidad eléctrica constante.  
+
+4. **Protección de Dispositivos**:  
+   - **Bloqueos físicos en puertos USB**: Evitan la conexión de dispositivos no autorizados.  
+   - **Armarios seguros para servidores**: Gabinetes con cerraduras electrónicas.  
+
+#### **Ejemplo Práctico**  
+En una gran empresa, el centro de datos se encuentra dentro de una habitación restringida. Solo el personal autorizado accede mediante **tarjetas de acceso** y **escaneo biométrico**. Cámaras CCTV monitorean las actividades las 24 horas, y hay sistemas de refrigeración y protección contra incendios para evitar daños físicos.
+
+### 2. Seguridad Lógica  
+
+#### **Descripción**
+La **seguridad lógica** se enfoca en proteger los recursos de software y datos de accesos no autorizados, modificaciones, errores o ataques informáticos. Incluye mecanismos como **autenticación**, **autorización** y **control de acceso**, así como herramientas para prevenir y detectar actividades maliciosas.  
+
+#### **Rol en la Protección del Sistema Operativo**
+La seguridad lógica garantiza la **confidencialidad**, **integridad** y **autenticidad** de los datos y recursos en el sistema operativo. Sin estas medidas, el sistema queda vulnerable a:
+- Ataques de malware y virus.
+- Accesos no autorizados a archivos o procesos.
+- Daños intencionados al software crítico.  
+
+#### **Técnicas y Ejemplos Prácticos**
+1. **Autenticación y Autorización**:  
+   - **Contraseñas seguras**: Implementación de políticas robustas de contraseñas.  
+   - **Autenticación Multifactor (MFA)**: Verificación mediante múltiples factores, como contraseñas y tokens SMS.  
+
+2. **Protección contra Malware**:  
+   - **Antivirus**: Software que detecta y elimina virus y malware. Ejemplo: **Windows Defender, Kaspersky**.  
+   - **Anti-ransomware**: Herramientas específicas para evitar secuestros de datos.  
+
+3. **Control de Acceso**:  
+   - **Permisos de archivos**: Sistemas de control de lectura, escritura y ejecución de archivos.  
+   - **Listas de Control de Acceso (ACL)**: Especifican qué usuarios o procesos pueden acceder a recursos específicos.  
+
+4. **Cifrado de Información**:  
+   - **Cifrado de archivos**: Herramientas como BitLocker en Windows protegen los archivos del disco duro.  
+   - **Cifrado en tránsito**: Uso de protocolos como **SSL/TLS** para proteger datos enviados por red.  
+
+5. **Monitoreo y Auditoría**:  
+   - **Registros de actividades (logs)**: Mantienen un historial de eventos para auditar accesos y errores.  
+
+#### **Ejemplo Práctico**  
+Un sistema operativo como **Windows Server** utiliza **contraseñas robustas** y **permisos de archivos** para garantizar que solo administradores puedan modificar configuraciones críticas. Además, utiliza **BitLocker** para cifrar los discos duros y proteger la información en caso de robo.
+
+#### 3. Seguridad de Red  
+
+#### **Descripción**
+La **seguridad de red** protege las comunicaciones y datos que viajan entre sistemas conectados. Se enfoca en prevenir **interceptación de datos**, **ataques de denegación de servicio (DoS)**, y **accesos no autorizados** a través de redes públicas o privadas.  
+
+#### **Rol en la Protección del Sistema Operativo**
+La seguridad de red garantiza la **confidencialidad** y **disponibilidad** de los datos mientras se transmiten. Sin estas medidas, los atacantes podrían:
+- Interceptar información confidencial (ataques de "man-in-the-middle").  
+- Saturar la red para hacerla inaccesible.  
+- Acceder remotamente a sistemas no protegidos.  
+
+#### **Técnicas y Ejemplos Prácticos**
+1. **Firewalls**:  
+   - **Firewalls de software**: Ejemplo: **Windows Firewall**.  
+   - **Firewalls de hardware**: Dispositivos que filtran el tráfico a nivel de red.  
+
+2. **Redes Privadas Virtuales (VPN)**:  
+   - Protegen la información transmitida a través de redes públicas mediante cifrado.  
+
+3. **Sistemas de Detección y Prevención de Intrusos (IDPS)**:  
+   - Detectan actividades sospechosas y bloquean ataques automáticamente.  
+
+4. **Segmentación de Red**:  
+   - Divide la red en subredes para limitar el alcance de posibles ataques.  
+
+5. **Control de Acceso a la Red (NAC)**:  
+   - Asegura que solo dispositivos autorizados puedan conectarse a la red.  
+
+#### **Ejemplo Práctico**  
+En una empresa, el acceso a la red está protegido con un **firewall** y **VPN**. Los empleados utilizan credenciales únicas para acceder remotamente a los recursos, y se implementa un **IDPS** que bloquea intentos de intrusión sospechosos.
+
 
