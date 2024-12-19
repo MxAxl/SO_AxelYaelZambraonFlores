@@ -379,4 +379,62 @@ El directorio /usuarios/axel/documentos/ es dañado debido a un fallo del sistem
 | **Snapshots**             | Recuperación rápida de estados previos           | Compatible solo con sistemas específicos        |
 | **Almacenamiento en la Nube** | Respaldo remoto, accesible desde cualquier lugar | Requiere conexión constante y suscripción       |
 
+# Protección y Seguridad
+
+## Ejercicio 1: Concepto y objetivos de protección y seguridad
+
+### **Conceptos de Protección y Seguridad en Sistemas Operativos**
+
+En el ámbito de los sistemas operativos, los conceptos de **protección** y **seguridad** desempeñan un papel clave para garantizar un entorno funcional y confiable:
+
+- **Protección**: Se refiere a los mecanismos diseñados para controlar el acceso a los recursos del sistema, como la memoria, los archivos y los dispositivos. Su propósito principal es evitar usos indebidos o accesos no autorizados, garantizando que solo las entidades legítimas puedan interactuar con los recursos.
+
+- **Seguridad**: Se enfoca en proteger el sistema contra amenazas externas e internas que puedan comprometer su funcionalidad. Abarca medidas para salvaguardar la **confidencialidad**, **integridad** y **disponibilidad** de los datos, así como herramientas para la detección y respuesta ante incidentes.
+
+Ambos conceptos son fundamentales para prevenir accesos no autorizados, errores accidentales y ataques maliciosos.
+
+### **Objetivos Principales de un Sistema de Protección y Seguridad**
+
+Los sistemas operativos implementan mecanismos de protección y seguridad con los siguientes objetivos principales:
+
+#### 1. **Confidencialidad**
+Garantiza que la información sensible solo sea accesible para usuarios o procesos autorizados. Esto se logra a través de:
+- Controles de acceso (autenticación y autorización).
+- Encriptación de datos para proteger la información durante su almacenamiento y transmisión.
+
+#### 2. **Integridad**
+Asegura que los datos y recursos del sistema no sean alterados de manera no autorizada. Las medidas más comunes incluyen:
+- Hashes y sumas de verificación para detectar modificaciones.
+- Mecanismos de control de versiones para proteger los datos contra errores accidentales.
+
+#### 3. **Disponibilidad**
+Se enfoca en mantener los recursos y servicios operativos para los usuarios legítimos, incluso bajo ataques o fallos. Algunas prácticas incluyen:
+- Planes de recuperación ante desastres.
+- Sistemas de respaldo.
+- Prevención de ataques de denegación de servicio (DoS).
+
+#### 4. **Autenticidad**
+Verifica que los usuarios o sistemas sean quienes afirman ser. Esto previene suplantaciones mediante:
+- Métodos de autenticación como contraseñas, biometría o certificados digitales.
+
+#### 5. **No Repudio**
+Impide que una entidad niegue haber realizado una acción específica. Este objetivo es esencial en:
+- Transacciones electrónicas con firmas digitales.
+- Registros detallados en auditorías.
+
+### **Ejemplo Práctico**
+
+#### Contexto:
+Imaginemos un sistema operativo en una empresa que maneja información financiera confidencial.
+
+1. **Confidencialidad**: Los archivos de datos financieros están cifrados. Solo los empleados del área contable tienen acceso a través de credenciales únicas, y se implementan políticas que limitan la visibilidad de los datos.
+
+2. **Integridad**: Cada archivo tiene un hash asociado que se verifica antes y después de cualquier modificación. Si el hash no coincide, el sistema genera una alerta.
+
+3. **Disponibilidad**: El sistema realiza respaldos diarios y cuenta con servidores redundantes para evitar interrupciones en caso de fallos o ataques.
+
+4. **Autenticidad**: Los empleados acceden al sistema mediante tarjetas inteligentes y autenticación multifactor, asegurando que solo personal autorizado ingrese.
+
+5. **No Repudio**: Cada operación financiera requiere una firma digital que registra de manera inequívoca al empleado que realizó la transacción.
+
 
