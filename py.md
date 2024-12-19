@@ -127,3 +127,82 @@ Los sistemas de archivos deben gestionar los accesos según permisos asignados a
 #### Cuando Usar NTFS:
 - **Sistemas Windows:** Su integración nativa garantiza un rendimiento óptimo en dispositivos Windows.
 - **Entornos Mixtos:** Es ideal si necesitas compartir datos entre Windows y Linux.
+
+## Ejercicio 3: Organización Lógica y Física de Archivos
+
+### Organización Lógica: Árbol Jerárquico de Directorios
+En la mayoría de los sistemas de archivos, los archivos y directorios están organizados de forma lógica en una estructura jerárquica similar a un árbol. 
+
+#### Ejemplo de Árbol Jerárquico
+```plaintext
+/
+├── home/
+│   ├── usuario/
+│   │   ├── documentos/
+│   │   │   ├── proyecto.md
+│   │   │   ├── informe.pdf
+│   │   └── imágenes/
+│   │       ├── foto1.jpg
+│   │       ├── foto2.png
+│   └── compartido/
+├── var/
+│   ├── log/
+│   │   ├── system.log
+│   │   ├── auth.log
+├── etc/
+│   ├── config.conf
+└── dev/
+    ├── sda
+    ├── sdb
+```
+
+#### Explicación:
+1. **Raíz (/):** Es el directorio base del sistema.
+2. **Directorios Secundarios:** Contienen subdirectorios y archivos. Por ejemplo, /home/usuario/documentos/ contiene archivos como proyecto.md y informe.pdf.
+3. **Archivos:** Son las hojas del árbol, mientras que los directorios son los nodos.
+
+### Organización Física: Traducción de Dirección Lógica a Dirección Física
+En el nivel físico, los datos no están organizados jerárquicamente como en el nivel lógico. En su lugar, están almacenados como bloques distribuidos en el disco. La traducción entre la organización lógica y física se realiza mediante el sistema de archivos.
+
+#### Proceso de Traducción
+1. **Nombre del Archivo (Lógico):** Cuando un usuario solicita abrir un archivo, proporciona su ruta lógica, como /home/usuario/documentos/proyecto.md.
+2. **Sistema de Archivos:** El sistema convierte esta ruta en un identificador único llamado **inode** (en sistemas Linux) o una entrada en la **MFT** (en sistemas NTFS).
+3. **Bloques Físicos:** El inode o la MFT contiene información sobre los bloques físicos donde está almacenado el archivo.
+4. **Lectura Física:** El sistema accede a esos bloques físicos, los carga en memoria y los presenta al usuario.
+
+#### Relación entre Estructuras
+| **Estructura Lógica** | **Estructura Física** |
+|-----------------------|-----------------------|
+| Directorios           | Entradas en tablas de asignación. |
+| Archivos              | Bloques de datos distribuidos en el disco. |
+| Metadatos             | Inodes, MFT o estructuras similares. |
+
+### Ejemplo Práctico de Almacenamiento Físico
+Supongamos que tenemos el archivo proyecto.md de 8 KB almacenado en un disco con bloques de 4 KB.
+
+#### Detalles:
+- **Archivo Lógico:** /home/usuario/documentos/proyecto.md.
+- **Bloques Físicos:** El archivo ocupa dos bloques (Bloque 5 y Bloque 10).
+
+#### Paso a Paso:
+1. **Ubicación Lógica:** El archivo está en la ruta /home/usuario/documentos/.
+2. **Sistema de Archivos:**
+   - Crea una entrada en el inode o la MFT que asocia el archivo con los bloques físicos.
+   - Guarda los metadatos, como permisos, tamaño, y ubicaciones de bloques.
+3. **Ubicación Física:**
+   - Bloque 5: Contiene los primeros 4 KB del archivo.
+   - Bloque 10: Contiene los últimos 4 KB del archivo.
+
+#### Representación Gráfica
+```plaintext
+[Archivo Lógico]
+proyecto.md --> Inode #25 --> [Bloque 5] [Bloque 10]
+
+[Disco Físico]
+Bloque 1  | Metadata de /home
+Bloque 2  | Metadata de /usuario
+Bloque 3  | Metadata de /documentos
+Bloque 4  | Metadata de proyecto.md (Inode #25)
+Bloque 5  | Contenido de proyecto.md (Primera parte)
+Bloque 10 | Contenido de proyecto.md (Segunda parte)
+```
