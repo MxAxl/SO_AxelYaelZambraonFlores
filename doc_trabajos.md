@@ -167,4 +167,17 @@ Indica el final del programa y devuelve 0 como código de salida exitoso.
 
 3. **¿Qué tipo de sistemas de archivos se usan en las particiones?**  
    El comando blkid muestra que la partición /dev/sda2 utiliza el sistema de archivos ext4. Este es un sistema de archivos comúnmente usado en sistemas Linux por su confiabilidad y rendimiento.
-   
+
+## Actividad 3: Explorar dispositivos de entrada
+
+1. **¿Qué eventos genera cada dispositivo al interactuar con ellos?**  
+   - **Teclado**: Genera eventos relacionados con pulsaciones de teclas (códigos de teclas presionadas y liberadas). Estos eventos generalmente tienen la etiqueta EV_KEY en la salida de evtest, indicando acciones de entrada a nivel de teclas.
+   - **Mouse**: Genera eventos relacionados con movimientos (EV_REL para movimientos relativos), clics de botones (EV_KEY para los botones del ratón) y desplazamiento de la rueda si está disponible (EV_REL con un eje correspondiente).
+   - **Controladores USB adicionales**: Los eventos generados dependen del dispositivo conectado. Por ejemplo, un controlador USB puede generar eventos específicos de sus funciones, como EV_ABS para entradas análogas o EV_KEY para botones.
+
+2. **¿Cómo se identifican los dispositivos en /proc/bus/input/devices?**  
+   Los dispositivos en este archivo se identifican mediante varias secciones que incluyen:
+   - **Name**: El nombre del dispositivo.
+   - **Phys**: La ubicación física del dispositivo en el sistema.
+   - **Handlers**: Los manejadores asociados al dispositivo (por ejemplo, eventX, donde X es el número del dispositivo para evtest).
+   - **Bus**: El tipo de bus al que pertenece el dispositivo (por ejemplo, USB, PCI).  
