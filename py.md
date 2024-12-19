@@ -135,7 +135,7 @@ En la mayoría de los sistemas de archivos, los archivos y directorios están or
 
 #### Ejemplo de Árbol Jerárquico
 
-![alt text](<imagen 2.png>)
+![alt text](<imagen2.png>)
 
 #### Explicación:
 1. **Raíz (/):** Es el directorio base del sistema.
