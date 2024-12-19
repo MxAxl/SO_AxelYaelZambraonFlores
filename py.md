@@ -632,4 +632,115 @@ Una empresa mediana utiliza un servidor centralizado donde los empleados almacen
    - Se utilizan Listas de Control de Acceso (ACL) para definir permisos específicos en archivos y directorios, permitiendo excepciones cuando sea necesario. Por ejemplo, si un miembro de marketing necesita acceder a un archivo en ventas, se ajusta la ACL correspondiente para otorgar acceso de solo lectura
 ::contentReference[oaicite:3]{index=3}
  
- 
+## Ejercicio 4: Implantación de matrices de acceso
+
+Una **matriz de acceso** es una representación tabular que muestra los permisos que tienen los usuarios sobre diferentes recursos de un sistema. Es una herramienta esencial en los sistemas operativos para gestionar y controlar los accesos de manera efectiva, garantizando la seguridad y el correcto funcionamiento de los recursos.
+
+### Diseño de la Matriz de Acceso
+
+Para este ejercicio, diseñaremos una matriz de acceso para un sistema con **3 usuarios** y **4 recursos**, considerando los permisos comunes: **lectura (R)**, **escritura (W)**, **ejecución (X)** y **sin acceso (—)**.
+
+#### Usuarios y Recursos
+
+- **Usuarios**:
+  1. **Alice**: Administradora del sistema.
+  2. **Bob**: Usuario estándar.
+  3. **Charlie**: Invitado.
+
+- **Recursos**:
+  1. **Archivo1**: Documento compartido.
+  2. **Archivo2**: Archivo privado de Alice.
+  3. **Programa1**: Aplicación ejecutable.
+  4. **BaseDatos1**: Base de datos sensible.
+
+#### Matriz de Acceso
+
+| Usuarios   | Archivo1 | Archivo2 | Programa1 | BaseDatos1 |
+|------------|----------|----------|-----------|------------|
+| **Alice**  | R, W     | R, W     | R, W, X   | R, W       |
+| **Bob**    | R        | —        | R, X      | R          |
+| **Charlie**| R        | —        | —         | —          |
+
+### Uso de la Matriz en el Control de Acceso
+
+La matriz de acceso opera como una **referencia centralizada** que un sistema operativo utiliza para validar las solicitudes de los usuarios sobre los recursos. Cada vez que un usuario intenta interactuar con un recurso, el sistema verifica la matriz para determinar si la acción solicitada está permitida.
+
+#### Pasos de Control de Acceso
+
+1. **Identificación del Usuario**:  
+   El sistema identifica al usuario mediante su **credencial** (nombre de usuario, ID, etc.).
+
+2. **Validación en la Matriz**:  
+   El sistema consulta la matriz para verificar:
+   - Si el usuario tiene permisos sobre el recurso solicitado.
+   - Si el tipo de acción (lectura, escritura, ejecución) está permitido.
+
+3. **Ejecución o Bloqueo**:  
+   - Si la acción está permitida, el sistema concede el acceso.
+   - Si la acción no está permitida, se bloquea el acceso y, opcionalmente, se genera un registro en los logs.
+
+### Simulación de Escenarios
+
+A continuación, mostramos ejemplos de cómo se utiliza esta matriz en escenarios prácticos:
+
+#### Escenario 1: Acceso Permitido
+- **Usuario**: Bob  
+- **Acción**: Intentar leer **Archivo1**.  
+- **Proceso**:
+  1. El sistema identifica a Bob como el usuario solicitante.
+  2. Consulta la matriz y encuentra que Bob tiene permiso de **lectura (R)** sobre **Archivo1**.
+  3. Permite el acceso.
+- **Resultado**: Bob puede leer el contenido de **Archivo1**.
+
+#### Escenario 2: Acceso No Permitido
+- **Usuario**: Charlie  
+- **Acción**: Intentar ejecutar **Programa1**.  
+- **Proceso**:
+  1. El sistema identifica a Charlie como el usuario solicitante.
+  2. Consulta la matriz y encuentra que Charlie tiene **sin acceso (—)** sobre **Programa1**.
+  3. Bloquea el acceso e informa al usuario que no tiene permisos.
+- **Resultado**: Charlie no puede ejecutar el programa. Se genera un registro en el log del sistema indicando el intento de acceso no autorizado.
+
+#### Escenario 3: Acceso de Administradora
+- **Usuario**: Alice  
+- **Acción**: Modificar **BaseDatos1**.  
+- **Proceso**:
+  1. El sistema identifica a Alice como el usuario solicitante.
+  2. Consulta la matriz y encuentra que Alice tiene permisos de **lectura y escritura (R, W)** sobre **BaseDatos1**.
+  3. Permite el acceso.
+- **Resultado**: Alice puede modificar los datos en la base de datos.
+
+### Ventajas de Usar una Matriz de Acceso
+
+1. **Estructura Clara**:  
+   La matriz proporciona una visión clara y estructurada de los permisos asignados, facilitando la gestión y auditoría de accesos.
+
+2. **Flexibilidad**:  
+   Permite ajustar los permisos fácilmente al agregar o modificar filas (usuarios) y columnas (recursos).
+
+3. **Seguridad Mejorada**:  
+   Reduce los riesgos de accesos no autorizados al centralizar la validación de permisos.
+
+### Desafíos de las Matrices de Acceso
+
+1. **Escalabilidad**:  
+   En sistemas con muchos usuarios y recursos, la matriz puede volverse muy grande y difícil de gestionar.
+
+2. **Rendimiento**:  
+   Consultar matrices muy grandes puede ralentizar el sistema.
+
+3. **Espacio en Memoria**:  
+   Almacenar matrices extensas puede consumir una cantidad significativa de memoria.
+
+### Ejemplo en la Vida Real
+
+En un entorno empresarial:
+- **Usuarios**: Los empleados de una compañía.
+- **Recursos**: Archivos compartidos, aplicaciones internas y bases de datos.
+- **Matriz de Acceso**: Define quién tiene acceso a qué, según el rol del empleado (ejemplo: administradores tienen acceso total, mientras que los invitados solo pueden visualizar archivos específicos).
+
+Cuando un empleado intenta acceder a un recurso:
+- Si es permitido, el sistema concede el acceso.
+- Si no, el sistema bloquea la acción y alerta al administrador sobre el intento.
+
+
